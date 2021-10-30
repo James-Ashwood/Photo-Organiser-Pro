@@ -25,25 +25,25 @@
 * Automatic photo organisation
 * Simple to use - no need to be tech-minded
 
---
+---
 
 ## How To Use
 
 Still in development - will update when ready
 
---
+---
 
 ## Download
 
 You can download the latest version of for Windows [here](https://github.com/James-Ashwood/Photo-Organiser-Pro/releases)
 
---
+---
 
 ## Contact
 
 Photo Organiser Pro is based around [github](https://github.com/), so you can access and review the project through [our repo](https://github.com/James-Ashwood/Photo-Organiser-Pro)
 
---
+---
 
 ## Credits
 
@@ -52,16 +52,16 @@ This software uses the following open source packages:
 - [C#/.Net](https://dotnet.microsoft.com/languages/csharp)
 - [Metadata Extractor](https://github.com/drewnoakes/metadata-extractor-dotnet)
 
---
+---
 
 ## Shoutouts
 
 * Created by [James Ashwood]()
 
---
+---
 
 ## License
 
 [GNU Public License](https://github.com/James-Ashwood/Photo-Organiser-Pro/blob/main/LICENSE)
 
---
+---
