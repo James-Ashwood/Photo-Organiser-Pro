@@ -1,12 +1,8 @@
-# Photo-Organiser-Pro
-Photo Organiser Pro (POP) is a windows application that makes importing photos off any device easy, as well as a simple organising structure.
-
-
 <h1 align="center">
   <br>
-  <a href="https://github.com/James-Ashwood/Photo-Organiser-Pro"><img src="https://github.com/James-Ashwood/Photo-Organiser-Pro/blob/main/afa1b529252249918a2e9e851b230d59.png" alt="Photo Organiser Pro" width="200"></a>
-  <br>
   Photo Organiser Pro
+  <br>
+  <a href="https://github.com/James-Ashwood/Photo-Organiser-Pro"><img src="https://github.com/James-Ashwood/Photo-Organiser-Pro/blob/main/afa1b529252249918a2e9e851b230d59.png" alt="Photo Organiser Pro" width="200"></a>
   <br>
 </h1>
 
