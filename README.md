@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Monitered-Yes-success">
   <img src="https://img.shields.io/badge/Platform-Windows-lightgray">
   <img src="https://img.shields.io/badge/Language-C#-informational">
-  [![Join the chat at https://gitter.im/Photo-Organiser-Pro/community](https://badges.gitter.im/Photo-Organiser-Pro/community.svg)](https://gitter.im/Photo-Organiser-Pro/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+  <a href="https://gitter.im/Photo-Organiser-Pro/community"><img src="https://img.shields.io/badge/Chat-On_Gitter-success"></a>
 </h1>
 
 <h4 align="center">Photo Organiser Pro (POP) is a windows application that makes importing photos off any device easy, as well as a simple organising structure.</h4>
@@ -40,6 +40,7 @@ You can download the latest version of for Windows [here](https://github.com/Jam
 ## Contact
 
 Photo Organiser Pro is based around [github](https://github.com/), so you can access and review the project through [our repo](https://github.com/James-Ashwood/Photo-Organiser-Pro)
+You can also chat with the developers through our [gitter](https://gitter.im/Photo-Organiser-Pro/community) page
 
 ## Credits
 
