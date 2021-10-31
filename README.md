@@ -40,7 +40,7 @@ You can download the latest version of for Windows [here](https://github.com/Jam
 ## Contact
 
 Photo Organiser Pro is based around [github](https://github.com/), so you can access and review the project through [our repo](https://github.com/James-Ashwood/Photo-Organiser-Pro). 
-You can also chat with the developers through our [gitter](https://gitter.im/Photo-Organiser-Pro/community) page
+You can also chat with the developers through our [matrix](https://matrix.to/#/#photo-organiser-pro:matrix.org) community.
 
 ## Credits
 
