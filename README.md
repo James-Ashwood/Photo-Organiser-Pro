@@ -6,7 +6,7 @@
   <br>
   <img src="https://img.shields.io/badge/Monitered-Yes-success">
   <img src="https://img.shields.io/badge/Platform-Windows-lightgray">
-  <img src="https://img.shields.io/badge/Language-C#-informational">
+  <img src="https://img.shields.io/badge/Language-C--Sharp-informational">
   <a href="https://gitter.im/Photo-Organiser-Pro/community"><img src="https://img.shields.io/badge/Chat-On_Gitter-success"></a>
 </h1>
 
