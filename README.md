@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Monitered-Yes-success">
   <img src="https://img.shields.io/badge/Platform-Windows-lightgray">
   <img src="https://img.shields.io/badge/Language-C--Sharp-informational">
-  <a href="https://gitter.im/Photo-Organiser-Pro/community"><img src="https://img.shields.io/badge/Chat-On_Gitter-success"></a>
+  <a href="https://matrix.to/#/#photo-organiser-pro:matrix.org"><img src="https://img.shields.io/badge/Chat-Matrix-success"></a>
 </h1>
 
 <h4 align="center">Photo Organiser Pro (POP) is a windows application that makes importing photos off any device easy, as well as a simple organising structure.</h4>
