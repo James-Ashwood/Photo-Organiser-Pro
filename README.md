@@ -23,6 +23,8 @@
 
 ## Key Features
 
+[![Join the chat at https://gitter.im/Photo-Organiser-Pro/community](https://badges.gitter.im/Photo-Organiser-Pro/community.svg)](https://gitter.im/Photo-Organiser-Pro/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 * Import off any device
 * Organise your photos how you want in a few clicks
 * Copy exactly from and to where they should be - no copying files everywhere
