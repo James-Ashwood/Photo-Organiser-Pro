@@ -13,11 +13,11 @@ using System.IO;
 using System.Windows.Forms;
 using System.Data;
 
-// Namespaces
+// Namespace for the project
 namespace Photo_Organiser_Pro
 {
 
-    // Form Class
+    // Form Class - Part of the Window1
     public partial class Window1 : Form
     {
         
@@ -325,8 +325,8 @@ namespace Photo_Organiser_Pro
                 fileRow = dataTableCurrent.NewRow();
 
                 // Remove the already know part of the path
-                string tempFileName = file.Replace(parentDirectory + "\\", "");
-                string fileLocation = file.Replace(parentDirectory + "\\", "");
+                string tempFileName = file.Replace(TextCurrentFolderLocation.Text + "\\", "");
+                string fileLocation = file.Replace(TextCurrentFolderLocation.Text + "\\", "");
 
                 // Find the first section of the path (i.e. the subdirectory) and assign that to fileLocation (i.e subDirectories = wholePath - pathGiven - fileName)
                 if (fileLocation.LastIndexOf("\\") != -1)
