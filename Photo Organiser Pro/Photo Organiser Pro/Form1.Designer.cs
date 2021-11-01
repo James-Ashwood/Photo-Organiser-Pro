@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*  Program:        Form1.Designer.cs
+ *  Last Edited:    01/11/2021
+ *  Last Editor:    James Ashwood
+ *  Version:        N/A
+ *  Commented:      Automatically
+ */
+
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
