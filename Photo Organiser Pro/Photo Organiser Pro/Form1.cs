@@ -15,9 +15,12 @@ namespace Photo_Organiser_Pro
         {
             InitializeComponent();
         }
+        public DataTable dataTableCurrent = new DataTable();
+        public DataTable dttwo = new DataTable();
 
         private void SetJson(string key, string valueString, IList<string> valueList)
         {
+
             Settings setup = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(@"C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\Files\jsconfig1.json"));
             if (key == "DefaultCurrentLocation")
             {
@@ -40,6 +43,12 @@ namespace Photo_Organiser_Pro
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            dataTableCurrent.Columns.Add("Current File Name");
+            dataTableCurrent.Columns.Add("Current File Subdirectory Path");
+            dataGridView1.DataSource = dataTableCurrent;
+            dataGridView1.Columns[0].Width = 270;
+            dataGridView1.Columns[1].Width = 270;
 
             Settings setup = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(@"C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\Files\jsconfig1.json"));
 
@@ -203,7 +212,28 @@ namespace Photo_Organiser_Pro
         { }
 
         private void ChangedTextBoxCurrentLocation(object sender, EventArgs e)
-        { }
+        {
+            DataRow fileRow = dataTableCurrent.NewRow();
+
+            string parentDirectory = TextCurrentFolderLocation.Text;
+            foreach (string file in System.IO.Directory.GetFiles(parentDirectory, "*", SearchOption.AllDirectories))
+            {
+                fileRow = dataTableCurrent.NewRow();
+                string tempFileName = file.Replace(parentDirectory + "\\", "");
+                string fileLocation = file.Replace(parentDirectory + "\\", "");
+                int idx = fileLocation.LastIndexOf("\\");
+                if (idx != -1)
+                {
+                    fileLocation = fileLocation.Substring(0, idx);
+                }
+                string fileName = tempFileName.Replace(fileLocation + "\\", "");
+                fileRow["Current File Name"] = fileName;
+                fileRow["Current File Subdirectory Path"] = fileLocation;
+                dataTableCurrent.Rows.Add(fileRow);
+            }
+
+            dataGridView1.DataSource = dataTableCurrent;
+        }
 
         private void CopyImages(object sender, EventArgs e)
         {

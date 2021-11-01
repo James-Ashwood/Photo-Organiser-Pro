@@ -61,8 +61,6 @@ namespace Photo_Organiser_Pro
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.CurrentFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CurrentFileLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button3 = new System.Windows.Forms.Button();
             this.NamingConventionBox.SuspendLayout();
             this.FolderConventionBox.SuspendLayout();
@@ -370,29 +368,12 @@ namespace Photo_Organiser_Pro
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.CurrentFileName,
-            this.CurrentFileLocation});
             this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveBorder;
             this.dataGridView1.Location = new System.Drawing.Point(5, 28);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(609, 499);
             this.dataGridView1.TabIndex = 1;
-            // 
-            // CurrentFileName
-            // 
-            this.CurrentFileName.HeaderText = "Current File Name";
-            this.CurrentFileName.Name = "CurrentFileName";
-            this.CurrentFileName.ReadOnly = true;
-            this.CurrentFileName.Width = 283;
-            // 
-            // CurrentFileLocation
-            // 
-            this.CurrentFileLocation.HeaderText = "Current File Location";
-            this.CurrentFileLocation.Name = "CurrentFileLocation";
-            this.CurrentFileLocation.ReadOnly = true;
-            this.CurrentFileLocation.Width = 283;
             // 
             // button3
             // 
@@ -465,7 +446,6 @@ namespace Photo_Organiser_Pro
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn CurrentFileName;
-        private DataGridViewTextBoxColumn CurrentFileLocation;
     }
 }
 
