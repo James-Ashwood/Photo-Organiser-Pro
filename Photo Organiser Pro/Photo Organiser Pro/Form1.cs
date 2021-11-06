@@ -1,5 +1,5 @@
 ﻿/*  Program:        Form1.cs
- *  Last Edited:    01/11/2021
+ *  Last Edited:    06/11/2021
  *  Last Editor:    James Ashwood
  *  Version:        N/A
  *  Commented:      Yes
@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Data;
+using System.ComponentModel;
+
 
 // Namespace for the project
 namespace Photo_Organiser_Pro
@@ -20,7 +22,7 @@ namespace Photo_Organiser_Pro
     // Form Class - Part of the Window1
     public partial class Window1 : Form
     {
-        
+
         // Initializing
         public Window1()
         {
@@ -37,7 +39,7 @@ namespace Photo_Organiser_Pro
 
             // Read the JSON data and set it to setup
             Settings setup = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(@"C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\Files\jsconfig1.json"));
-            
+
             // Make the change
             if (key == "DefaultCurrentLocation")
             {
@@ -60,25 +62,41 @@ namespace Photo_Organiser_Pro
             File.WriteAllText(@"C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\Files\jsconfig1.json", JsonConvert.SerializeObject(setup));
         }
 
+        // CopyImageBackgroundWorker_DoWork - Worker function that calls the copy function
+        private void CopyImageBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Run the CopyFunction
+            CopyFunction();
+        }
+
+
         // Form1_Load - Winforms function to setup screen when the form 1 is loaded
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Background Worker
+            this.copyImageBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CopyImageBackgroundWorker_DoWork);
 
             // Add the columns to the dataTableCurrent, and update the DataGridView
             dataTableCurrent.Columns.Add("Current File Name");
             dataTableCurrent.Columns.Add("Current File Subdirectory Path");
+            dataTableCurrent.Columns.Add("Current File Checksum");
             dataGridView1.DataSource = dataTableCurrent;
 
             // Add the columns to the dataTableNew, and update the DataGridView
             dataTableNew.Columns.Add("New File Name");
             dataTableNew.Columns.Add("New File Subdirectory Path");
+            dataTableNew.Columns.Add("New File Checksum");
+            dataTableNew.Columns.Add("Done");
             dataGridView2.DataSource = dataTableNew;
 
             // Set the column width for UX
-            dataGridView1.Columns[0].Width = 270;
-            dataGridView1.Columns[1].Width = 270;
-            dataGridView2.Columns[0].Width = 270;
-            dataGridView2.Columns[1].Width = 270;
+            dataGridView1.Columns[0].Width = 145;
+            dataGridView1.Columns[1].Width = 145;
+            dataGridView1.Columns[2].Width = 250;
+            dataGridView2.Columns[0].Width = 129;
+            dataGridView2.Columns[1].Width = 129;
+            dataGridView2.Columns[2].Width = 232;
+            dataGridView2.Columns[3].Width = 50;
 
             // Get the settings properties
             Settings setup = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(@"C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\Files\jsconfig1.json"));
@@ -341,6 +359,8 @@ namespace Photo_Organiser_Pro
                 fileRow["Current File Name"] = fileName;
                 fileRow["Current File Subdirectory Path"] = fileLocation;
 
+                fileRow["Current File Checksum"] = GetMD5Checksum(TextCurrentFolderLocation.Text + "\\" + fileLocation + "\\" + fileName);
+
                 // Assign this to dataGridView1
                 dataTableCurrent.Rows.Add(fileRow);
             }
@@ -359,10 +379,91 @@ namespace Photo_Organiser_Pro
             UpdateRightGrid();
         }
 
-        // ChangedTextBoxNewLocation - Button function that should copy over the files
+        // GetMD5Checksum - Custom function that gets the MD5 checksum
+        public static string GetMD5Checksum(string filename)
+        {
+            // Using the cryptography MD5 variable
+            using (var md5 = System.Security.Cryptography.MD5.Create())
+            {
+                // Using the file
+                using (var stream = System.IO.File.OpenRead(filename))
+                {
+                    // Create a hash and return the checksum from the hash
+                    var hash = md5.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "");
+                }
+            }
+        }
+
+        // SetRows - Custom
+        private void SetRows(int rowNum, string rowTable, string rowColumn, string rowValue)
+        {
+            // If the rowTable is new, then use the dataTableNew
+            if (rowTable == "New")
+            {
+                dataTableNew.Rows[rowNum][rowColumn] = rowValue;
+            }
+            // If the rowTable is current, then use the dataTableCurrent
+            if (rowTable == "Current")
+            {
+                dataTableCurrent.Rows[rowNum][rowColumn] = rowValue;
+            }
+        }
+
+        // CopyFunction - Custom function that copies over the files
+        private void CopyFunction()
+        {
+            // Create some strings used later
+            string currentFileName, currentFileLocation, currentFileChecksum, newFileName, newFileLocation, source, destination;
+
+            // Create a counter and loop through the amount of rows in the dataTableCurrent grid
+            int count = dataTableCurrent.Rows.Count;
+            for (int i = 1; i <= count; i++)
+            {
+                // Get the values from the left side
+                currentFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
+                currentFileLocation = dataTableCurrent.Rows[i - 1]["Current File Subdirectory Path"].ToString();
+                currentFileChecksum = dataTableCurrent.Rows[i - 1]["Current File Checksum"].ToString();
+
+                // Get the values from the left side
+                newFileName = dataTableNew.Rows[i - 1]["New File Name"].ToString();
+                newFileLocation = dataTableNew.Rows[i - 1]["New File Subdirectory Path"].ToString();
+
+                // Get source and destination locations
+                source = TextCurrentFolderLocation.Text + "\\" + currentFileLocation + "\\" + currentFileName;
+                destination = TextNewFolderLocation.Text + "\\" + newFileLocation + "\\" + newFileName;
+
+                // Make any required directories
+                if (!Directory.Exists(TextNewFolderLocation.Text + "\\" + newFileLocation))
+                {
+                    Directory.CreateDirectory(TextNewFolderLocation.Text + "\\" + newFileLocation);
+                }
+
+                // Copy the files
+                System.IO.File.Copy(source, destination, true);
+
+                // Check the destination files exist and both checksums are equal and display output data
+                if (File.Exists(destination))
+                {
+                    if (GetMD5Checksum(source) == GetMD5Checksum(destination))
+                    {
+                        SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
+                        SetRows(i - 1, "New", "Done", "Yes");
+                    }
+                    else
+                    {
+                        SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
+                        SetRows(i - 1, "New", "Done", "Error");
+                    }
+                }
+            }
+        }
+
+        // ChangedTextBoxNewLocation - Button function that copies over the files in the background
         private void CopyImages(object sender, EventArgs e)
         {
-            MessageBox.Show("The Copy Images Button Was Pressed");
+            // Run the background worker for the copying files
+            copyImageBackgroundWorker.RunWorkerAsync(2000);
         }
     }
 

@@ -67,6 +67,7 @@ namespace Photo_Organiser_Pro
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button3 = new System.Windows.Forms.Button();
+            this.copyImageBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.NamingConventionBox.SuspendLayout();
             this.FolderConventionBox.SuspendLayout();
             this.FolderLocationBox.SuspendLayout();
@@ -96,6 +97,7 @@ namespace Photo_Organiser_Pro
             this.NamingConventionBox.Controls.Add(this.CameraModelBoxNamingConvention);
             this.NamingConventionBox.Controls.Add(this.DateTakenBoxNamingConvention);
             this.NamingConventionBox.Location = new System.Drawing.Point(2, 2);
+            this.NamingConventionBox.MinimumSize = new System.Drawing.Size(1269, 40);
             this.NamingConventionBox.Name = "NamingConventionBox";
             this.NamingConventionBox.Size = new System.Drawing.Size(1269, 40);
             this.NamingConventionBox.TabIndex = 1;
@@ -173,6 +175,7 @@ namespace Photo_Organiser_Pro
             this.FolderConventionBox.Controls.Add(this.CameraModelBoxFolderConvention);
             this.FolderConventionBox.Controls.Add(this.DateTakenBoxFolderConvention);
             this.FolderConventionBox.Location = new System.Drawing.Point(2, 44);
+            this.FolderConventionBox.MinimumSize = new System.Drawing.Size(1269, 40);
             this.FolderConventionBox.Name = "FolderConventionBox";
             this.FolderConventionBox.Size = new System.Drawing.Size(1269, 40);
             this.FolderConventionBox.TabIndex = 7;
@@ -259,6 +262,7 @@ namespace Photo_Organiser_Pro
             this.FolderLocationBox.Controls.Add(this.SetDefaultCurrrentFolderLocation);
             this.FolderLocationBox.Controls.Add(this.SetDefaultNewFolderLocation);
             this.FolderLocationBox.Location = new System.Drawing.Point(2, 86);
+            this.FolderLocationBox.MinimumSize = new System.Drawing.Size(1269, 40);
             this.FolderLocationBox.Name = "FolderLocationBox";
             this.FolderLocationBox.Size = new System.Drawing.Size(1269, 40);
             this.FolderLocationBox.TabIndex = 8;
@@ -331,6 +335,7 @@ namespace Photo_Organiser_Pro
             this.groupBox2.Controls.Add(this.dataGridView1);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Location = new System.Drawing.Point(2, 126);
+            this.groupBox2.MinimumSize = new System.Drawing.Size(1269, 566);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1269, 566);
             this.groupBox2.TabIndex = 13;
@@ -385,6 +390,7 @@ namespace Photo_Organiser_Pro
             this.Controls.Add(this.NamingConventionBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Window1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Photo Organiser Pro";
@@ -432,6 +438,7 @@ namespace Photo_Organiser_Pro
         private TextBox TextNewFolderLocation;
         private TextBox TextCurrentFolderLocation;
         private DataGridViewTextBoxColumn CurrentFileName;
+        private System.ComponentModel.BackgroundWorker copyImageBackgroundWorker;
     }
 }
 
