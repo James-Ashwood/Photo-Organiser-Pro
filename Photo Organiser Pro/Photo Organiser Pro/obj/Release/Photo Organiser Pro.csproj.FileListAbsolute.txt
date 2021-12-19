@@ -1,0 +1,17 @@
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.csproj.AssemblyReference.cache
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo_Organiser_Pro.Window1.resources
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo_Organiser_Pro.Properties.Resources.resources
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.csproj.GenerateResource.cache
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\Photo Organiser Pro.exe.config
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\Photo Organiser Pro.exe
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\Photo Organiser Pro.pdb
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\MetadataExtractor.dll
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\Newtonsoft.Json.dll
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\Tulpep.NotificationWindow.dll
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\XmpCore.dll
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\MetadataExtractor.xml
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\Newtonsoft.Json.xml
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\XmpCore.xml
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.csproj.CoreCompileInputs.cache
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.exe
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.pdb
