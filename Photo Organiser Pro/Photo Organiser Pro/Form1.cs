@@ -416,9 +416,6 @@ namespace Photo_Organiser_Pro
             string oldFileName = currentFileName;
             string oldFilePath = currentFilePath;
 
-            Debug.WriteLine("Old File Name: " + oldFileName);
-            Debug.WriteLine("Old File Path: " + oldFilePath);
-
             string fileEnding = currentFileName.Substring(currentFileName.IndexOf("."));
 
             if (DateTakenBoxNamingConvention.Checked == true)
@@ -563,30 +560,37 @@ namespace Photo_Organiser_Pro
                 // Loop recursively, through all directories and subdirecotories using the path in the textbox
                 foreach (string file in System.IO.Directory.GetFiles(TextCurrentFolderLocation.Text, "*", SearchOption.AllDirectories))
                 {
-                    // Make sure the fileRow variable is back to default
-                    fileRow = dataTableCurrent.NewRow();
 
-                    // Remove the already know part of the path
-                    string fileName = file.Replace(TextCurrentFolderLocation.Text + "\\", "");
-                    string fileLocation = fileName;
-
-                    // Find the first section of the path (i.e. the subdirectory) and assign that to fileLocation (i.e subDirectories = wholePath - pathGiven - fileName)
-                    if (fileName.LastIndexOf("\\") != -1)
+                    string fileEnding = file.Substring(file.IndexOf(".")+1);
+                    List<string> fileEndings = new List<string>() { "JPG", "jpg", "Jpg", "JPEG", "jpeg", "PNG", "PNG", "RAW", "raw", "ARW", "arw", "CR2" };
+                    if (fileEndings.Contains(fileEnding) == true)
                     {
-                        fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
+
+                        // Make sure the fileRow variable is back to default
+                        fileRow = dataTableCurrent.NewRow();
+
+                        // Remove the already know part of the path
+                        string fileName = file.Replace(TextCurrentFolderLocation.Text + "\\", "");
+                        string fileLocation = fileName;
+
+                        // Find the first section of the path (i.e. the subdirectory) and assign that to fileLocation (i.e subDirectories = wholePath - pathGiven - fileName)
+                        if (fileName.LastIndexOf("\\") != -1)
+                        {
+                            fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
+                        }
+
+                        // Now cut this from the original fileName value and allocate this to the fileName (i.e fileName = wholePath - pathGiven - subdirectories)
+                        fileLocation = fileLocation.Replace(fileName, "");
+
+                        // Assign these to the row value
+                        fileRow["Current File Name"] = fileName;
+                        fileRow["Current File Subdirectory Path"] = fileLocation;
+
+                        fileRow["Current File Checksum"] = GetMD5Checksum(file);
+
+                        // Assign this to dataGridView1
+                        dataTableCurrent.Rows.Add(fileRow);
                     }
-
-                    // Now cut this from the original fileName value and allocate this to the fileName (i.e fileName = wholePath - pathGiven - subdirectories)
-                    fileLocation = fileLocation.Replace(fileName, "");
-
-                    // Assign these to the row value
-                    fileRow["Current File Name"] = fileName;
-                    fileRow["Current File Subdirectory Path"] = fileLocation;
-
-                    fileRow["Current File Checksum"] = GetMD5Checksum(file);
-
-                    // Assign this to dataGridView1
-                    dataTableCurrent.Rows.Add(fileRow);
                 }
 
                 // Assign this to dataGridView1
