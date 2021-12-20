@@ -36,7 +36,7 @@ namespace Photo_Organiser_Pro
         public DataTable dataTableCurrent = new DataTable();
         public DataTable dataTableNew = new DataTable();
 
-        // SetJson - Functionallity function that changes and serealizes the JSON required when a default setting is changed
+        // SetJson - Custom function that changes and serealizes the JSON required when a default setting is changed
         private void SetJson(string key, string valueString, IList<string> valueList)
         {
             // JSON File Path Definiition
@@ -73,19 +73,27 @@ namespace Photo_Organiser_Pro
             popup.Popup();
         }
 
+        // ExtractMetadata - Custom function that gets the metadata out of the images
         private string ExtractMetadata(string key, string filePath)
         {
+            // Gets all of the directories (i.e. substets of data) that the image has
             var directories = ImageMetadataReader.ReadMetadata(filePath);
+
+            // Loops throuhg them
             foreach (var directory in directories)
             {
+                // Loops through each individual data point in the directory
                 foreach (var tag in directory.Tags)
                 {
+                    // Checks if the data point is the one that we want
                     if (tag.Name == key)
                     {
+                        // If so, returns that value
                         return tag.Description;
                     }
                 }
             }
+            // If we cant find any data, return "NoData"
             return "NoData";
         }
 
@@ -322,102 +330,143 @@ namespace Photo_Organiser_Pro
             }
         }
 
+        // Numerify - Custom function that turns the month code into the number
         private string Numberify(string data)
         {
+            // Take a list of the months
             List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-            string returnData = months.FindIndex(a => a.Contains(data)).ToString();
+
+            // Finds the index in the list above, adds one (due to 0 starting list indexes), then turns into a string
+            string returnData = (months.FindIndex(a => a.Contains(data))+1).ToString();
+
+            // If the string is only one digit, add a 0 into the front.
             if (returnData.Length == 1)
             {
                 returnData = "0" + returnData;
             }
+
+            // Return the data
             return returnData;
         }
 
+        // GetDisplayData - Custom function that takes in an image path and a data value and turns it into the string that we need to display
         private string GetDisplayData(string key, string currentFilePath, string currentFileName, string oldFileName, string oldFilePath, string oldFileEnding, string seperator)
         {
+            // Set the original return value
             string value = "";
 
+            // Get the original files path
             string filePath = TextCurrentFolderLocation.Text + "\\" + oldFilePath + "\\" + oldFileName;
 
+            // If we are looking for the date taken
             if (key == "DateTaken")
             {
+                // If the metadata we can extract is not NoData
                 if (ExtractMetadata("Date/Time Original", filePath) != "NoData")
                 {
+                    // Take the metadata and format it
                     value = ExtractMetadata("Date/Time Original", filePath).Split(' ')[0].Replace(":", seperator);
                 }
                 else
                 {
+                    // Otherwise return "NoData"
                     value = "NoData";
                 }
             }
+            // If we are looking for the time taken
             else if (key == "TimeTaken")
             {
+                // If the metadata we can extract is not NoData
                 if (ExtractMetadata("Date/Time Original", filePath) != "NoData")
                 {
+                    // Take the metadata and format it
                     value = ExtractMetadata("Date/Time Original", filePath).Split(' ')[1].Replace(":", seperator);
                 }
                 else
                 {
+                    // Otherwise return "NoData"
                     value = "NoData";
                 }
             }
+            // If we are looking for the camera model
             else if (key == "CameraModel")
             {
+                // Take the metadata and format it
                 value = ExtractMetadata("Make", filePath) + "-" + ExtractMetadata("Model", filePath);
             }
+            // If we are looking for the date and time taken
             else if (key == "DateTimeTaken")
             {
+                // If the metadata we can extract is not NoData
                 if (ExtractMetadata("Date/Time Original", filePath) != "NoData")
                 {
+                    // Take the metadata and format it
                     value = GetDisplayData("DateTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, oldFileEnding, seperator) + ExtractMetadata("Date/Time Original", filePath).Split(' ')[1].Replace(":", seperator);
                 }
                 else
                 {
+                    // Otherwise return "NoData"
                     value = "NoData";
                 }
             }
+            // If we are looking for the date, time and camera taken
             else if (key == "DateTimeCameraTaken")
             {
+                // Take the metadata and format it
                 value = GetDisplayData("DateTimeTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, oldFileEnding, seperator) + ExtractMetadata("Make", filePath) + "-" + ExtractMetadata("Model", filePath);
             }
+            // If we are looking for the date created
             else if (key == "DateCreated")
             {
+                // If the metadata we can extract is not NoData
                 if (ExtractMetadata("Date/Time Digitized", filePath) != "NoData")
                 {
+                    // Take the metadata and format it
                     value = ExtractMetadata("Date/Time Digitized", filePath).Split(' ')[0].Replace(":", seperator);
                 }
                 else
                 {
+                    // Otherwise return "NoData"
                     value = "NoData";
                 }
             }
+            // If we are looking for the date modified
             else if (key == "DateModified")
             {
+                // Take the metadata and format it
                 string data = ExtractMetadata("File Modified Date", filePath);
                 value = data.Split(' ')[5] + seperator + Numberify(data.Split(' ')[1]) + seperator + data.Split(' ')[2];
             }
+            // If we are looking for the original name
             else if (key == "OrginalName")
             {
+                // Take the metadata and format it
                 value = oldFileName;
                 value = value.Replace(oldFileEnding, "");
             }
+            // If we are looking for the original path
             else if (key == "OriginalPath")
             {
+                // Take the metadata and format it
                 value = oldFilePath;
             }
 
+            // Return the value and the seporator
             return value + seperator;
         }
 
-        // GetNewName - Functionallity function that gets the new name of a file
+        // GetNewName - Custom function that gets the new name of a file
         private string GetNewName(string currentFilePath, string currentFileName)
         {
+            // Get the paths for the image
             string newFileName = "";
             string oldFileName = currentFileName;
             string oldFilePath = currentFilePath;
 
+            // Get the file name
             string fileEnding = currentFileName.Substring(currentFileName.IndexOf("."));
 
+            // Go through all of the naming convention boxes, if its is check then call GetDisplayData and add it to the name
             if (DateTakenBoxNamingConvention.Checked == true)
             {
                 newFileName += GetDisplayData("DateTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
@@ -443,28 +492,35 @@ namespace Photo_Organiser_Pro
                 newFileName += GetDisplayData("OrginalName", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
             }
 
+            // If there is a name there
             if (newFileName.Length > 0)
             {
+                // Remove the last "-" on the name
                 newFileName = newFileName.Remove(newFileName.Length - 1, 1);
             }
             else
             {
+                // Otherwise name it "NoDataAvailable"
                 newFileName = "NoDataAvailable";
             }
 
+            // Return the new name and the file ending
             return newFileName + fileEnding;
         }
 
 
-        // GetNewName - Functionallity function that gets the new name of a file
+        // GetNewName - Custom function that gets the new name of a file
         private string GetNewPath(string currentFilePath, string currentFileName)
         {
+            // Get the paths for the image
             string newFilePath = "";
             string oldFileName = currentFileName;
             string oldFilePath = currentFilePath;
 
+            // Set the file ending to an empty string (used for the function calling)
             string fileEnding = "";
 
+            // Go through all of the folder convention boxes, if its is check then call GetDisplayData and add it to the name
             if (DateTakenFolderConvention.Checked == true)
             {
                 newFilePath += GetDisplayData("DateTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
@@ -490,15 +546,19 @@ namespace Photo_Organiser_Pro
                 newFilePath += GetDisplayData("OriginalPath", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
             }
 
+            // If there is a path there
             if (newFilePath.Length > 0)
             {
+                // Remove the last "/" on the path
                 newFilePath = newFilePath.Remove(newFilePath.Length - 1, 1);
             }
             else
             {
+                // Otherwise name it "NoDataAvailable"
                 newFilePath = "NoData";
             }
 
+            // Return the new path
             return newFilePath;
         }
 
@@ -695,13 +755,17 @@ namespace Photo_Organiser_Pro
             copyImageBackgroundWorker.RunWorkerAsync(2000);
         }
 
+        // UpdatedFolderConvention - Button function that updates the right grid when the folder convention changes
         private void UpdatedFolderConvention(object sender, EventArgs e)
         {
+            // Call UpdateRightGrid
             UpdateRightGrid();
         }
 
+        // UpdatedNamingConvention - Button function that updates the right grid when the naming convention changes
         private void UpdatedNamingConvention(object sender, EventArgs e)
         {
+            // Call UpdateRightGrid
             UpdateRightGrid();
         }
     }
