@@ -90,6 +90,9 @@ namespace Photo_Organiser_Pro
             // 
             // NamingConventionBox
             // 
+            this.NamingConventionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.NamingConventionBox.BackColor = System.Drawing.SystemColors.Control;
             this.NamingConventionBox.Controls.Add(this.SetDefaultNamingConvention);
             this.NamingConventionBox.Controls.Add(this.OrignalNameBoxNamingConvention);
@@ -110,6 +113,7 @@ namespace Photo_Organiser_Pro
             // 
             // SetDefaultNamingConvention
             // 
+            this.SetDefaultNamingConvention.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SetDefaultNamingConvention.Location = new System.Drawing.Point(1754, 23);
             this.SetDefaultNamingConvention.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SetDefaultNamingConvention.Name = "SetDefaultNamingConvention";
@@ -181,6 +185,9 @@ namespace Photo_Organiser_Pro
             // 
             // FolderConventionBox
             // 
+            this.FolderConventionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.FolderConventionBox.BackColor = System.Drawing.SystemColors.Control;
             this.FolderConventionBox.Controls.Add(this.OrignalNameFolderConvention);
             this.FolderConventionBox.Controls.Add(this.DateModifiedFolderConvention);
@@ -273,6 +280,7 @@ namespace Photo_Organiser_Pro
             // 
             // SetDefaultFolderConvention
             // 
+            this.SetDefaultFolderConvention.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SetDefaultFolderConvention.Location = new System.Drawing.Point(1754, 20);
             this.SetDefaultFolderConvention.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SetDefaultFolderConvention.Name = "SetDefaultFolderConvention";
@@ -284,6 +292,9 @@ namespace Photo_Organiser_Pro
             // 
             // FolderLocationBox
             // 
+            this.FolderLocationBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.FolderLocationBox.BackColor = System.Drawing.SystemColors.Control;
             this.FolderLocationBox.Controls.Add(this.TextNewFolderLocation);
             this.FolderLocationBox.Controls.Add(this.TextCurrentFolderLocation);
@@ -303,6 +314,7 @@ namespace Photo_Organiser_Pro
             // 
             // TextNewFolderLocation
             // 
+            this.TextNewFolderLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TextNewFolderLocation.Location = new System.Drawing.Point(982, 22);
             this.TextNewFolderLocation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.TextNewFolderLocation.Name = "TextNewFolderLocation";
@@ -335,6 +347,7 @@ namespace Photo_Organiser_Pro
             // 
             // ChangeNewFolderLocation
             // 
+            this.ChangeNewFolderLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ChangeNewFolderLocation.Location = new System.Drawing.Point(1564, 20);
             this.ChangeNewFolderLocation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ChangeNewFolderLocation.Name = "ChangeNewFolderLocation";
@@ -357,6 +370,7 @@ namespace Photo_Organiser_Pro
             // 
             // SetDefaultNewFolderLocation
             // 
+            this.SetDefaultNewFolderLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SetDefaultNewFolderLocation.Location = new System.Drawing.Point(1754, 20);
             this.SetDefaultNewFolderLocation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SetDefaultNewFolderLocation.Name = "SetDefaultNewFolderLocation";
@@ -368,6 +382,9 @@ namespace Photo_Organiser_Pro
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.BackColor = System.Drawing.SystemColors.Control;
             this.groupBox2.Controls.Add(this.dataGridView2);
             this.groupBox2.Controls.Add(this.dataGridView1);
@@ -386,6 +403,8 @@ namespace Photo_Organiser_Pro
             // 
             this.dataGridView2.AllowUserToAddRows = false;
             this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dataGridView2.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.GridColor = System.Drawing.SystemColors.ActiveBorder;
@@ -393,7 +412,7 @@ namespace Photo_Organiser_Pro
             this.dataGridView2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.RowHeadersWidth = 51;
+            this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.Size = new System.Drawing.Size(915, 768);
             this.dataGridView2.TabIndex = 2;
             // 
@@ -401,6 +420,8 @@ namespace Photo_Organiser_Pro
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveBorder;
@@ -408,12 +429,14 @@ namespace Photo_Organiser_Pro
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(914, 768);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.Click += new System.EventHandler(this.LeftGridClicked);
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Location = new System.Drawing.Point(1680, 820);
             this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
@@ -440,6 +463,7 @@ namespace Photo_Organiser_Pro
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Photo Organiser Pro";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.NamingConventionBox.ResumeLayout(false);
             this.NamingConventionBox.PerformLayout();
             this.FolderConventionBox.ResumeLayout(false);

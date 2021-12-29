@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using Tulpep.NotificationWindow;
+using System.Drawing;
 
 // Namespace for the project
 namespace Photo_Organiser_Pro
@@ -104,9 +105,49 @@ namespace Photo_Organiser_Pro
             CopyFunction();
         }
 
+        // ResizeForm - Custom function that resizes the datagrids in the form
+        private void ResizeForm()
+        {
+
+            // Update the grids width to be a certain percentage of the screens width.
+            dataGridView1.Width = Convert.ToInt32(this.Width * 0.47);
+            dataGridView2.Width = Convert.ToInt32(this.Width * 0.47);
+
+            // Update the grids location
+            dataGridView1.Left = 15;
+            dataGridView2.Left = Convert.ToInt32(this.Width - this.Width * 0.47 - 35);
+
+            // Update the grids width to be a certain percentage of the screens width.
+            TextCurrentFolderLocation.Width = Convert.ToInt32((this.Width - 454)*0.47);
+            TextNewFolderLocation.Width = Convert.ToInt32((this.Width-454)*0.47);
+
+            // Update the grids location
+            TextCurrentFolderLocation.Left = 232;
+            TextNewFolderLocation.Left = Convert.ToInt32(this.Width - ((this.Width - 454) * 0.47) - 252);
+
+            // Set the column width for the DataGrids
+            if (dataGridView1.Columns.Contains("Current File Name") == true)
+            {
+                dataGridView1.Columns[0].Width = Convert.ToInt32((this.Width * 0.47) * 0.26);
+                dataGridView1.Columns[1].Width = Convert.ToInt32((this.Width * 0.47) * 0.26);
+                dataGridView1.Columns[2].Width = Convert.ToInt32((this.Width * 0.47) * 0.46);
+                dataGridView2.Columns[0].Width = Convert.ToInt32((this.Width * 0.47) * 0.23);
+                dataGridView2.Columns[1].Width = Convert.ToInt32((this.Width * 0.47) * 0.23);
+                dataGridView2.Columns[2].Width = Convert.ToInt32((this.Width * 0.47) * 0.42);
+                dataGridView2.Columns[3].Width = Convert.ToInt32((this.Width * 0.47) * 0.09);
+            }
+        }
+
+        // Form1_Load - Winforms function to setup screen when the form 1 is resized
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            ResizeForm();
+        }
+
         // Form1_Load - Winforms function to setup screen when the form 1 is loaded
         private void Form1_Load(object sender, EventArgs e)
         {
+
             // Background Worker
             copyImageBackgroundWorker.DoWork += CopyImageBackgroundWorker_DoWork;
 
@@ -123,14 +164,8 @@ namespace Photo_Organiser_Pro
             dataTableNew.Columns.Add("Done");
             dataGridView2.DataSource = dataTableNew;
 
-            // Set the column width for UX
-            dataGridView1.Columns[0].Width = 145;
-            dataGridView1.Columns[1].Width = 145;
-            dataGridView1.Columns[2].Width = 250;
-            dataGridView2.Columns[0].Width = 129;
-            dataGridView2.Columns[1].Width = 129;
-            dataGridView2.Columns[2].Width = 232;
-            dataGridView2.Columns[3].Width = 50;
+            // Size the window and create the data grid columns
+            ResizeForm();
 
             // Get the settings properties
             Settings setup = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "\\jsconfig1.json"));
@@ -580,24 +615,42 @@ namespace Photo_Organiser_Pro
                 // Create a counter and loop through the amount of rows in the dataTableCurrent grid
                 int count = dataTableCurrent.Rows.Count;
 
+                // Loop through the list
                 for (int i = 1; i <= count; i++)
                 {
                     // Make sure the fileRow variable is back to default
                     fileRow = dataTableNew.NewRow();
 
-                    // Get the values from the left side
-                    oldFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
-                    oldFileLocation = dataTableCurrent.Rows[i - 1]["Current File Subdirectory Path"].ToString();
+                    // Is this file and invalid file
+                    if (ShowInvalidFiles().Contains(i-1))
+                    {
+                        // Assign these variables to the new rows values
+                        fileRow["New File Name"] = "N/A";
+                        fileRow["New File Subdirectory Path"] = "N/A";
 
-                    fileName = GetNewName(oldFileLocation, oldFileName);
-                    fileLocation = GetNewPath(oldFileLocation, oldFileName);
+                        // Add this row to dataTableNew data grid
+                        dataTableNew.Rows.Add(fileRow);
 
-                    // Assign these variables to the new rows values
-                    fileRow["New File Name"] = fileName;
-                    fileRow["New File Subdirectory Path"] = fileLocation;
+                        // Make this grid row red
+                        dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
+                    }
+                    else
+                    {
 
-                    // Add this row to dataTableNew data grid
-                    dataTableNew.Rows.Add(fileRow);
+                        // Get the values from the left side
+                        oldFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
+                        oldFileLocation = dataTableCurrent.Rows[i - 1]["Current File Subdirectory Path"].ToString();
+
+                        fileName = GetNewName(oldFileLocation, oldFileName);
+                        fileLocation = GetNewPath(oldFileLocation, oldFileName);
+
+                        // Assign these variables to the new rows values
+                        fileRow["New File Name"] = fileName;
+                        fileRow["New File Subdirectory Path"] = fileLocation;
+
+                        // Add this row to dataTableNew data grid
+                        dataTableNew.Rows.Add(fileRow);
+                    }
                 }
 
                 // Assign this to dataGridView2
@@ -605,9 +658,34 @@ namespace Photo_Organiser_Pro
             }
         }
 
+        private List<int> ShowInvalidFiles()
+        {
+
+            string currentFileName, currentFileEnding;
+            List<int> returnNumbers = new List<int>();
+
+            int count = dataTableCurrent.Rows.Count;
+            for (int i = 1; i <= count; i++)
+            {
+                // Get the values from the left side
+                currentFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
+                currentFileEnding = currentFileName.Substring(currentFileName.IndexOf(".") + 1);
+
+                List<string> allowedFileEndings = new List<string>() { "JPG", "JPEG", "PNG", "RAW", "ARW", "CR2", "TIFF", "FRAW" };
+                if (allowedFileEndings.Contains(currentFileEnding.ToUpper()) == false)
+                {
+                    returnNumbers.Add(i-1);
+                    dataGridView1.Rows[i-1].DefaultCellStyle.ForeColor = Color.Red;
+                }
+            }
+
+            return returnNumbers;
+        }
+
         // ChangedTextBoxCurrentLocation - Button function that updates the currentDataTable on the left, so that it can contain all the correct information
         private void ChangedTextBoxCurrentLocation(object sender, EventArgs e)
         {
+            // If the TextBox is not empty
             if (TextCurrentFolderLocation.Text != "")
             {
 
@@ -615,46 +693,45 @@ namespace Photo_Organiser_Pro
                 dataTableCurrent.Rows.Clear();
 
                 // Create the empty file row
-                DataRow fileRow = dataTableCurrent.NewRow();
+                DataRow fileRow;
 
                 // Loop recursively, through all directories and subdirecotories using the path in the textbox
                 foreach (string file in System.IO.Directory.GetFiles(TextCurrentFolderLocation.Text, "*", SearchOption.AllDirectories))
                 {
-
+                    // Get the file ending
                     string fileEnding = file.Substring(file.IndexOf(".")+1);
-                    List<string> fileEndings = new List<string>() { "JPG", "jpg", "Jpg", "JPEG", "jpeg", "PNG", "PNG", "RAW", "raw", "ARW", "arw", "CR2" };
-                    if (fileEndings.Contains(fileEnding) == true)
+                    
+                    // Make sure the fileRow variable is back to default
+                    fileRow = dataTableCurrent.NewRow();
+
+                    // Remove the already know part of the path
+                    string fileName = file.Replace(TextCurrentFolderLocation.Text + "\\", "");
+                    string fileLocation = fileName;
+
+                    // Find the first section of the path (i.e. the subdirectory) and assign that to fileLocation (i.e subDirectories = wholePath - pathGiven - fileName)
+                    if (fileName.LastIndexOf("\\") != -1)
                     {
-
-                        // Make sure the fileRow variable is back to default
-                        fileRow = dataTableCurrent.NewRow();
-
-                        // Remove the already know part of the path
-                        string fileName = file.Replace(TextCurrentFolderLocation.Text + "\\", "");
-                        string fileLocation = fileName;
-
-                        // Find the first section of the path (i.e. the subdirectory) and assign that to fileLocation (i.e subDirectories = wholePath - pathGiven - fileName)
-                        if (fileName.LastIndexOf("\\") != -1)
-                        {
-                            fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
-                        }
-
-                        // Now cut this from the original fileName value and allocate this to the fileName (i.e fileName = wholePath - pathGiven - subdirectories)
-                        fileLocation = fileLocation.Replace(fileName, "");
-
-                        // Assign these to the row value
-                        fileRow["Current File Name"] = fileName;
-                        fileRow["Current File Subdirectory Path"] = fileLocation;
-
-                        fileRow["Current File Checksum"] = GetMD5Checksum(file);
-
-                        // Assign this to dataGridView1
-                        dataTableCurrent.Rows.Add(fileRow);
+                        fileName = fileName.Substring(fileName.LastIndexOf("\\") + 1);
                     }
+
+                    // Now cut this from the original fileName value and allocate this to the fileName (i.e fileName = wholePath - pathGiven - subdirectories)
+                    fileLocation = fileLocation.Replace(fileName, "");
+
+                    // Assign these to the row value
+                    fileRow["Current File Name"] = fileName;
+                    fileRow["Current File Subdirectory Path"] = fileLocation;
+
+                    fileRow["Current File Checksum"] = GetMD5Checksum(file);
+
+                    // Assign this to dataGridView1
+                    dataTableCurrent.Rows.Add(fileRow);
                 }
 
                 // Assign this to dataGridView1
                 dataGridView1.DataSource = dataTableCurrent;
+
+                // Colour the grid
+                ShowInvalidFiles();
 
                 // Update the new files grid
                 UpdateRightGrid();
@@ -718,31 +795,47 @@ namespace Photo_Organiser_Pro
                 newFileName = dataTableNew.Rows[i - 1]["New File Name"].ToString();
                 newFileLocation = dataTableNew.Rows[i - 1]["New File Subdirectory Path"].ToString();
 
-                // Get source and destination locations
-                source = TextCurrentFolderLocation.Text + "\\" + currentFileLocation + "\\" + currentFileName;
-                destination = TextNewFolderLocation.Text + "\\" + newFileLocation + "\\" + newFileName;
-
-                // Make any required directories
-                if (!System.IO.Directory.Exists(TextNewFolderLocation.Text + "\\" + newFileLocation))
+                // Is this file and invalid file
+                if (ShowInvalidFiles().Contains(i - 1))
                 {
-                    System.IO.Directory.CreateDirectory(TextNewFolderLocation.Text + "\\" + newFileLocation);
+                    // Assign these variables to the new rows values
+                    SetRows(i - 1, "New", "New File Checksum", "N/A");
+                    SetRows(i - 1, "New", "Done", "Error");
+
+                    // Make this grid row red
+                    dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
                 }
-
-                // Copy the files
-                System.IO.File.Copy(source, destination, true);
-
-                // Check the destination files exist and both checksums are equal and display output data
-                if (File.Exists(destination))
+                else
                 {
-                    if (GetMD5Checksum(source) == GetMD5Checksum(destination))
+
+                    // Get source and destination locations
+                    source = TextCurrentFolderLocation.Text + "\\" + currentFileLocation + "\\" + currentFileName;
+                    destination = TextNewFolderLocation.Text + "\\" + newFileLocation + "\\" + newFileName;
+
+                    // Make any required directories
+                    if (!System.IO.Directory.Exists(TextNewFolderLocation.Text + "\\" + newFileLocation))
                     {
-                        SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
-                        SetRows(i - 1, "New", "Done", "Yes");
+                        System.IO.Directory.CreateDirectory(TextNewFolderLocation.Text + "\\" + newFileLocation);
                     }
-                    else
+
+                    // Copy the files
+                    System.IO.File.Copy(source, destination, true);
+
+                    // Check the destination files exist and both checksums are equal and display output data
+                    if (File.Exists(destination))
                     {
-                        SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
-                        SetRows(i - 1, "New", "Done", "Error");
+                        if (GetMD5Checksum(source) == GetMD5Checksum(destination))
+                        {
+                            SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
+                            SetRows(i - 1, "New", "Done", "Yes");
+                        }
+                        else
+                        {
+                            SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
+                            SetRows(i - 1, "New", "Done", "Error");
+
+                            dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
+                        }
                     }
                 }
             }
@@ -767,6 +860,11 @@ namespace Photo_Organiser_Pro
         {
             // Call UpdateRightGrid
             UpdateRightGrid();
+        }
+        
+        private void LeftGridClicked(object sender, EventArgs e)
+        {
+            ShowInvalidFiles();
         }
     }
 
