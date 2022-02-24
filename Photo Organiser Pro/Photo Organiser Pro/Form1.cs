@@ -1,7 +1,7 @@
 ﻿/*  Program:        Form1.cs
- *  Last Edited:    19/12/2021
+ *  Last Edited:    23/01/2021
  *  Last Editor:    James Ashwood
- *  Version:        N/A
+ *  Version:        1.2.1
  *  Commented:      Yes
  */
 
@@ -11,13 +11,16 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Data;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using Tulpep.NotificationWindow;
 using System.Drawing;
+using MediaDevices;
 
 // Namespace for the project
 namespace Photo_Organiser_Pro
@@ -74,11 +77,84 @@ namespace Photo_Organiser_Pro
             popup.Popup();
         }
 
-        // ExtractMetadata - Custom function that gets the metadata out of the images
-        private string ExtractMetadata(string key, string filePath)
+        // ExtractMetadataPath - Custom function that gets the metadata out of the images
+        private string ExtractMetadataPath(string key, string filePath)
         {
+            IReadOnlyList<MetadataExtractor.Directory> directories;
+
+            string place = filePath;
+
+            if (filePath.Contains("phone") || filePath.Contains("Phone"))
+            {
+                string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                userName = userName.Split('\\')[1];
+
+                bool found = false;
+                int counter = 1;
+                string folderName = "";
+                while (found == false)
+                {
+                    folderName = "phoneCopy" + counter.ToString();
+                    if (!System.IO.Directory.Exists($@"C:\Users\{userName}\.pop\{folderName}\"))
+                    {
+                        counter = counter - 1;
+                        folderName = "phoneCopy" + counter.ToString();
+                        found = true;
+                    }
+                    counter++;
+                }
+
+                if (folderName == "phoneCopy-1")
+                {
+                    folderName = "phoneCopy1";
+                }
+
+                // Gets all of the directories (i.e. substets of data) that the image has
+                directories = ImageMetadataReader.ReadMetadata($@"C:\Users\{userName}\.pop\{folderName}\" + filePath.Split('\\')[filePath.Split('\\').Length - 1]);
+            }
+            else
+            {
+                // Gets all of the directories (i.e. substets of data) that the image has
+                directories = ImageMetadataReader.ReadMetadata(place);
+            }
+
+            Debug.WriteLine(place);
+
+            // Loops throuhg them
+            foreach (var directory in directories)
+            {
+                // Loops through each individual data point in the directory
+                foreach (var tag in directory.Tags)
+                {
+                    // Checks if the data point is the one that we want
+                    if (tag.Name == key)
+                    {
+                        // If so, returns that value
+                        return tag.Description;
+                    }
+                }
+            }
+            // If we cant find any data, return "NoData"
+            return "NoData";
+        }
+        static void WriteSreamToDisk(string filePath, MemoryStream memoryStream)
+        {
+            using (FileStream file = new FileStream(filePath, FileMode.Create, System.IO.FileAccess.Write))
+            {
+                byte[] bytes = new byte[memoryStream.Length];
+                memoryStream.Read(bytes, 0, (int)memoryStream.Length);
+                file.Write(bytes, 0, bytes.Length);
+                memoryStream.Close();
+            }
+        }
+
+        // ExtractMetadataStream - Custom function that gets the metadata out of the images
+        private string ExtractMetadataStream(string key, Stream fileStream)
+        {
+            Debug.WriteLine(fileStream);
+
             // Gets all of the directories (i.e. substets of data) that the image has
-            var directories = ImageMetadataReader.ReadMetadata(filePath);
+            var directories = ImageMetadataReader.ReadMetadata(fileStream);
 
             // Loops throuhg them
             foreach (var directory in directories)
@@ -385,22 +461,23 @@ namespace Photo_Organiser_Pro
         }
 
         // GetDisplayData - Custom function that takes in an image path and a data value and turns it into the string that we need to display
-        private string GetDisplayData(string key, string currentFilePath, string currentFileName, string oldFileName, string oldFilePath, string oldFileEnding, string seperator)
+        private string GetDisplayData(string key, string place, string currentFilePath, string currentFileName, string oldFileName, string oldFilePath, string oldFileEnding, string seperator)
         {
             // Set the original return value
             string value = "";
 
             // Get the original files path
-            string filePath = TextCurrentFolderLocation.Text + "\\" + oldFilePath + "\\" + oldFileName;
+            string filePath = place + "\\" + oldFilePath + "\\" + oldFileName;
+            Debug.WriteLine(filePath);
 
             // If we are looking for the date taken
             if (key == "DateTaken")
             {
                 // If the metadata we can extract is not NoData
-                if (ExtractMetadata("Date/Time Original", filePath) != "NoData")
+                if (ExtractMetadataPath("Date/Time Original", filePath) != "NoData")
                 {
                     // Take the metadata and format it
-                    value = ExtractMetadata("Date/Time Original", filePath).Split(' ')[0].Replace(":", seperator);
+                    value = ExtractMetadataPath("Date/Time Original", filePath).Split(' ')[0].Replace(":", seperator);
                 }
                 else
                 {
@@ -412,10 +489,10 @@ namespace Photo_Organiser_Pro
             else if (key == "TimeTaken")
             {
                 // If the metadata we can extract is not NoData
-                if (ExtractMetadata("Date/Time Original", filePath) != "NoData")
+                if (ExtractMetadataPath("Date/Time Original", filePath) != "NoData")
                 {
                     // Take the metadata and format it
-                    value = ExtractMetadata("Date/Time Original", filePath).Split(' ')[1].Replace(":", seperator);
+                    value = ExtractMetadataPath("Date/Time Original", filePath).Split(' ')[1].Replace(":", seperator);
                 }
                 else
                 {
@@ -427,16 +504,16 @@ namespace Photo_Organiser_Pro
             else if (key == "CameraModel")
             {
                 // Take the metadata and format it
-                value = ExtractMetadata("Make", filePath) + "-" + ExtractMetadata("Model", filePath);
+                value = ExtractMetadataPath("Make", filePath) + "-" + ExtractMetadataPath("Model", filePath);
             }
             // If we are looking for the date and time taken
             else if (key == "DateTimeTaken")
             {
                 // If the metadata we can extract is not NoData
-                if (ExtractMetadata("Date/Time Original", filePath) != "NoData")
+                if (ExtractMetadataPath("Date/Time Original", filePath) != "NoData")
                 {
                     // Take the metadata and format it
-                    value = GetDisplayData("DateTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, oldFileEnding, seperator) + ExtractMetadata("Date/Time Original", filePath).Split(' ')[1].Replace(":", seperator);
+                    value = GetDisplayData("DateTaken", place, currentFilePath, currentFileName, oldFileName, oldFilePath, oldFileEnding, seperator) + ExtractMetadataPath("Date/Time Original", filePath).Split(' ')[1].Replace(":", seperator);
                 }
                 else
                 {
@@ -448,16 +525,16 @@ namespace Photo_Organiser_Pro
             else if (key == "DateTimeCameraTaken")
             {
                 // Take the metadata and format it
-                value = GetDisplayData("DateTimeTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, oldFileEnding, seperator) + ExtractMetadata("Make", filePath) + "-" + ExtractMetadata("Model", filePath);
+                value = GetDisplayData("DateTimeTaken", place, currentFilePath, currentFileName, oldFileName, oldFilePath, oldFileEnding, seperator) + ExtractMetadataPath("Make", filePath) + "-" + ExtractMetadataPath("Model", filePath);
             }
             // If we are looking for the date created
             else if (key == "DateCreated")
             {
                 // If the metadata we can extract is not NoData
-                if (ExtractMetadata("Date/Time Digitized", filePath) != "NoData")
+                if (ExtractMetadataPath("Date/Time Digitized", filePath) != "NoData")
                 {
                     // Take the metadata and format it
-                    value = ExtractMetadata("Date/Time Digitized", filePath).Split(' ')[0].Replace(":", seperator);
+                    value = ExtractMetadataPath("Date/Time Digitized", filePath).Split(' ')[0].Replace(":", seperator);
                 }
                 else
                 {
@@ -469,7 +546,7 @@ namespace Photo_Organiser_Pro
             else if (key == "DateModified")
             {
                 // Take the metadata and format it
-                string data = ExtractMetadata("File Modified Date", filePath);
+                string data = ExtractMetadataPath("File Modified Date", filePath);
                 value = data.Split(' ')[5] + seperator + Numberify(data.Split(' ')[1]) + seperator + data.Split(' ')[2];
             }
             // If we are looking for the original name
@@ -491,7 +568,7 @@ namespace Photo_Organiser_Pro
         }
 
         // GetNewName - Custom function that gets the new name of a file
-        private string GetNewName(string currentFilePath, string currentFileName)
+        private string GetNewName(string place, string currentFilePath, string currentFileName)
         {
             // Get the paths for the image
             string newFileName = "";
@@ -504,27 +581,27 @@ namespace Photo_Organiser_Pro
             // Go through all of the naming convention boxes, if its is check then call GetDisplayData and add it to the name
             if (DateTakenBoxNamingConvention.Checked == true)
             {
-                newFileName += GetDisplayData("DateTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
+                newFileName += GetDisplayData("DateTaken", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
             }
             if (TimeTakenBoxNamingConvention.Checked == true)
             {
-                newFileName += GetDisplayData("TimeTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
+                newFileName += GetDisplayData("TimeTaken", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
             }
             if (CameraModelBoxNamingConvention.Checked == true)
             {
-                newFileName += GetDisplayData("CameraModel", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
+                newFileName += GetDisplayData("CameraModel", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
             }
             if (DateCreatedBoxNamingConvention.Checked == true)
             {
-                newFileName += GetDisplayData("DateCreated", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
+                newFileName += GetDisplayData("DateCreated", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
             }
             if (DateModifiedBoxNamingConvention.Checked == true)
             {
-                newFileName += GetDisplayData("DateModified", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
+                newFileName += GetDisplayData("DateModified", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
             }
             if (OrignalNameBoxNamingConvention.Checked == true)
             {
-                newFileName += GetDisplayData("OrginalName", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
+                newFileName += GetDisplayData("OrginalName", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "-");
             }
 
             // If there is a name there
@@ -545,7 +622,7 @@ namespace Photo_Organiser_Pro
 
 
         // GetNewName - Custom function that gets the new name of a file
-        private string GetNewPath(string currentFilePath, string currentFileName)
+        private string GetNewPath(string place, string currentFilePath, string currentFileName)
         {
             // Get the paths for the image
             string newFilePath = "";
@@ -558,27 +635,27 @@ namespace Photo_Organiser_Pro
             // Go through all of the folder convention boxes, if its is check then call GetDisplayData and add it to the name
             if (DateTakenFolderConvention.Checked == true)
             {
-                newFilePath += GetDisplayData("DateTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
+                newFilePath += GetDisplayData("DateTaken", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
             }
             if (DateTimeTakenFolderConvention.Checked == true)
             {
-                newFilePath += GetDisplayData("DateTimeTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
+                newFilePath += GetDisplayData("DateTimeTaken", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
             }
             if (DateTimeCameraTakenFolderConvention.Checked == true)
             {
-                newFilePath += GetDisplayData("DateTimeCameraTaken", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
+                newFilePath += GetDisplayData("DateTimeCameraTaken", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
             }
             if (DateCreatedFolderConvention.Checked == true)
             {
-                newFilePath += GetDisplayData("DateCreated", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
+                newFilePath += GetDisplayData("DateCreated", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
             }
             if (DateModifiedFolderConvention.Checked == true)
             {
-                newFilePath += GetDisplayData("DateModified", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
+                newFilePath += GetDisplayData("DateModified", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
             }
             if (OrignalNameFolderConvention.Checked == true)
             {
-                newFilePath += GetDisplayData("OriginalPath", currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
+                newFilePath += GetDisplayData("OriginalPath", place, currentFilePath, currentFileName, oldFileName, oldFilePath, fileEnding, "\\");
             }
 
             // If there is a path there
@@ -589,7 +666,7 @@ namespace Photo_Organiser_Pro
             }
             else
             {
-                // Otherwise name it "NoDataAvailable"
+                // Otherwise name it "NoData"
                 newFilePath = "NoData";
             }
 
@@ -600,62 +677,83 @@ namespace Photo_Organiser_Pro
         // UpdateRightGrid - Functionallity function thay updates the right grid
         private void UpdateRightGrid()
         {
+            string place = TextCurrentFolderLocation.Text;
+
             if (TextCurrentFolderLocation.Text != "" && TextNewFolderLocation.Text != "")
             {
-
-                // Clear the current dataTableNew
-                dataTableNew.Rows.Clear();
-
-                // Create the fileRow variable as a new row
-                DataRow fileRow = dataTableCurrent.NewRow();
-
-                // Create some strings used later
-                string oldFileName, oldFileLocation, fileName, fileLocation;
-
-                // Create a counter and loop through the amount of rows in the dataTableCurrent grid
-                int count = dataTableCurrent.Rows.Count;
-
-                // Loop through the list
-                for (int i = 1; i <= count; i++)
+                bool found = false;
+                int counter = 0;
+                string folderName = "";
+                while (found == false)
                 {
-                    // Make sure the fileRow variable is back to default
-                    fileRow = dataTableNew.NewRow();
+                    string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                    userName = userName.Split('\\')[1];
 
-                    // Is this file and invalid file
-                    if (ShowInvalidFiles().Contains(i-1))
+                    folderName = "phoneCopy" + counter.ToString();
+                    if (!System.IO.Directory.Exists($@"C:\Users\{userName}\.pop\{folderName}\"))
                     {
-                        // Assign these variables to the new rows values
-                        fileRow["New File Name"] = "N/A";
-                        fileRow["New File Subdirectory Path"] = "N/A";
-
-                        // Add this row to dataTableNew data grid
-                        dataTableNew.Rows.Add(fileRow);
-
-                        // Make this grid row red
-                        dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
+                        counter = counter - 1;
+                        folderName = "phoneCopy" + counter.ToString();
+                        found = true;
                     }
-                    else
-                    {
-
-                        // Get the values from the left side
-                        oldFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
-                        oldFileLocation = dataTableCurrent.Rows[i - 1]["Current File Subdirectory Path"].ToString();
-
-                        fileName = GetNewName(oldFileLocation, oldFileName);
-                        fileLocation = GetNewPath(oldFileLocation, oldFileName);
-
-                        // Assign these variables to the new rows values
-                        fileRow["New File Name"] = fileName;
-                        fileRow["New File Subdirectory Path"] = fileLocation;
-
-                        // Add this row to dataTableNew data grid
-                        dataTableNew.Rows.Add(fileRow);
-                    }
+                    counter++;
                 }
 
-                // Assign this to dataGridView2
-                dataGridView2.DataSource = dataTableNew;
+                place = folderName;
             }
+
+            // Clear the current dataTableNew
+            dataTableNew.Rows.Clear();
+
+            // Create the fileRow variable as a new row
+            DataRow fileRow = dataTableCurrent.NewRow();
+
+            // Create some strings used later
+            string oldFileName, oldFileLocation, fileName, fileLocation;
+
+            // Create a counter and loop through the amount of rows in the dataTableCurrent grid
+            int count = dataTableCurrent.Rows.Count;
+
+            // Loop through the list
+            for (int i = 1; i <= count; i++)
+            {
+                // Make sure the fileRow variable is back to default
+                fileRow = dataTableNew.NewRow();
+
+                // Is this file and invalid file
+                if (ShowInvalidFiles().Contains(i - 1))
+                {
+                    // Assign these variables to the new rows values
+                    fileRow["New File Name"] = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
+                    fileRow["New File Subdirectory Path"] = "ExcessFiles";
+
+                    // Add this row to dataTableNew data grid
+                    dataTableNew.Rows.Add(fileRow);
+
+                    // Make this grid row red
+                    dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.DarkGray;
+                }
+                else
+                {
+
+                    // Get the values from the left side
+                    oldFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
+                    oldFileLocation = dataTableCurrent.Rows[i - 1]["Current File Subdirectory Path"].ToString();
+
+                    fileName = GetNewName(place, oldFileLocation, oldFileName);
+                    fileLocation = GetNewPath(place, oldFileLocation, oldFileName);
+
+                    // Assign these variables to the new rows values
+                    fileRow["New File Name"] = fileName;
+                    fileRow["New File Subdirectory Path"] = fileLocation;
+
+                    // Add this row to dataTableNew data grid
+                    dataTableNew.Rows.Add(fileRow);
+                }
+            }
+
+            // Assign this to dataGridView2
+            dataGridView2.DataSource = dataTableNew;
         }
 
         private List<int> ShowInvalidFiles()
@@ -671,11 +769,11 @@ namespace Photo_Organiser_Pro
                 currentFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
                 currentFileEnding = currentFileName.Substring(currentFileName.IndexOf(".") + 1);
 
-                List<string> allowedFileEndings = new List<string>() { "JPG", "JPEG", "PNG", "RAW", "ARW", "CR2", "TIFF", "FRAW" };
+                List<string> allowedFileEndings = new List<string>() { "JPG", "JPEG", "RAW", "ARW", "CR2", "TIFF", "FRAW"};
                 if (allowedFileEndings.Contains(currentFileEnding.ToUpper()) == false)
                 {
                     returnNumbers.Add(i-1);
-                    dataGridView1.Rows[i-1].DefaultCellStyle.ForeColor = Color.Red;
+                    dataGridView1.Rows[i-1].DefaultCellStyle.ForeColor = Color.DarkGray;
                 }
             }
 
@@ -686,7 +784,7 @@ namespace Photo_Organiser_Pro
         private void ChangedTextBoxCurrentLocation(object sender, EventArgs e)
         {
             // If the TextBox is not empty
-            if (TextCurrentFolderLocation.Text != "")
+            if (((TextCurrentFolderLocation.Text != "") & (System.IO.Directory.Exists(TextCurrentFolderLocation.Text))) | (TextCurrentFolderLocation.Text == "Phone"))
             {
 
                 // Clear the current table
@@ -695,17 +793,64 @@ namespace Photo_Organiser_Pro
                 // Create the empty file row
                 DataRow fileRow;
 
+                // Create empty place variable
+                string place = TextCurrentFolderLocation.Text;
+
+                if (TextCurrentFolderLocation.Text == "Phone")
+                {
+                    string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                    userName = userName.Split('\\')[1];
+
+                    if (!System.IO.Directory.Exists($@"C:\\Users\\{userName}\\.pop"))
+                    {
+                        System.IO.Directory.CreateDirectory($@"C:\Users\{userName}\.pop");
+                    }
+
+                    string folderName = "";
+                    bool done = false;
+                    int counter = 1;
+                    while (done == false)
+                    {
+                        folderName = "phoneCopy" + counter.ToString();
+                        if (!System.IO.Directory.Exists($@"C:\Users\{userName}\.pop\{folderName}\"))
+                        {
+                            System.IO.Directory.CreateDirectory($@"C:\Users\{userName}\.pop\{folderName}\");
+                            done = true;
+                        }
+                        counter = counter + 1;                   
+                    }
+
+                    List<MediaDevice> devices = MediaDevice.GetDevices().ToList();
+                    var device = devices.Find(c => c.FriendlyName.Contains("Apple iPhone"));
+                    device.Connect();
+                    var photoDir = device.GetDirectoryInfo(@"Internal Storage\DCIM");
+
+                    var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
+
+                    foreach (var file in files)
+                    {
+                        MemoryStream memoryStream = new System.IO.MemoryStream();
+                        device.DownloadFile(file.FullName, memoryStream);
+                        memoryStream.Position = 0;
+                        WriteSreamToDisk($@"C:\Users\{userName}\.pop\{folderName}\{file.Name}", memoryStream);
+                    }
+
+                    device.Disconnect();
+
+                    place = $@"C:\Users\{userName}\.pop\{folderName}";
+                }
+
                 // Loop recursively, through all directories and subdirecotories using the path in the textbox
-                foreach (string file in System.IO.Directory.GetFiles(TextCurrentFolderLocation.Text, "*", SearchOption.AllDirectories))
+                foreach (string file in System.IO.Directory.GetFiles(place, "*", SearchOption.AllDirectories))
                 {
                     // Get the file ending
-                    string fileEnding = file.Substring(file.IndexOf(".")+1);
-                    
+                    string fileEnding = file.Substring(file.IndexOf(".") + 1);
+
                     // Make sure the fileRow variable is back to default
                     fileRow = dataTableCurrent.NewRow();
 
                     // Remove the already know part of the path
-                    string fileName = file.Replace(TextCurrentFolderLocation.Text + "\\", "");
+                    string fileName = file.Replace(place + "\\", "");
                     string fileLocation = fileName;
 
                     // Find the first section of the path (i.e. the subdirectory) and assign that to fileLocation (i.e subDirectories = wholePath - pathGiven - fileName)
@@ -749,11 +894,13 @@ namespace Photo_Organiser_Pro
         // GetMD5Checksum - Custom function that gets the MD5 checksum
         public static string GetMD5Checksum(string filename)
         {
+            string filePath = filename.Replace($@"\\", $@"\");
+
             // Using the cryptography MD5 variable
             using (var md5 = System.Security.Cryptography.MD5.Create())
             {
                 // Using the file
-                using (var stream = System.IO.File.OpenRead(filename))
+                using (var stream = System.IO.File.OpenRead(filePath))
                 {
                     // Create a hash and return the checksum from the hash
                     var hash = md5.ComputeHash(stream);
@@ -780,6 +927,32 @@ namespace Photo_Organiser_Pro
         // CopyFunction - Custom function that copies over the files
         private void CopyFunction()
         {
+            string place = TextCurrentFolderLocation.Text;
+
+            if (TextCurrentFolderLocation.Text == "Phone")
+            {
+                string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                userName = userName.Split('\\')[1];
+
+                bool found = false;
+                int counter = 1;
+                string folderName = "";
+                while (found == false)
+                {
+
+                    folderName = "phoneCopy" + counter.ToString();
+                    if (!System.IO.Directory.Exists($@"C:\Users\{userName}\.pop\{folderName}\"))
+                    {
+                        counter = counter - 1;
+                        folderName = "phoneCopy" + counter.ToString();
+                        found = true;
+                    }
+                    counter++;
+                }
+
+                place = $@"C:\Users\{userName}\.pop\{folderName}";
+            }
+
             // Create some strings used later
             string currentFileName, currentFileLocation, newFileName, newFileLocation, source, destination;
 
@@ -791,51 +964,65 @@ namespace Photo_Organiser_Pro
                 currentFileName = dataTableCurrent.Rows[i - 1]["Current File Name"].ToString();
                 currentFileLocation = dataTableCurrent.Rows[i - 1]["Current File Subdirectory Path"].ToString();
 
-                // Get the values from the left side
+                // Get the values from the right side
                 newFileName = dataTableNew.Rows[i - 1]["New File Name"].ToString();
                 newFileLocation = dataTableNew.Rows[i - 1]["New File Subdirectory Path"].ToString();
 
-                // Is this file and invalid file
-                if (ShowInvalidFiles().Contains(i - 1))
+                // Get source and destination locations
+                source = place + "\\" + currentFileLocation + "\\" + currentFileName.Split('\\')[currentFileName.Split('\\').Length - 1];
+                destination = TextNewFolderLocation.Text + "\\" + newFileLocation + "\\" + newFileName;
+
+                // Make any required directories
+                if (!System.IO.Directory.Exists(TextNewFolderLocation.Text + "\\" + newFileLocation))
                 {
-                    // Assign these variables to the new rows values
-                    SetRows(i - 1, "New", "New File Checksum", "N/A");
+                    System.IO.Directory.CreateDirectory(TextNewFolderLocation.Text + "\\" + newFileLocation);
+                }
+
+                int counter = 0;
+
+                try
+                {
+                    using (FileStream stream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None))
+                    {
+                        stream.Close();
+
+                    }
+                }
+                catch (IOException)
+                {
+                    if (counter < 100)
+                    {
+                        System.Threading.Tasks.Task.Delay(500);
+                        counter++;
+                    }
+                }
+                try
+                {
+                    // Copy the files
+                    File.Copy(source, destination, true);
+                }
+                catch (IOException)
+                {
+                    SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
                     SetRows(i - 1, "New", "Done", "Error");
 
-                    // Make this grid row red
                     dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
                 }
-                else
+
+                // Check the destination files exist and both checksums are equal and display output data
+                if (File.Exists(destination))
                 {
-
-                    // Get source and destination locations
-                    source = TextCurrentFolderLocation.Text + "\\" + currentFileLocation + "\\" + currentFileName;
-                    destination = TextNewFolderLocation.Text + "\\" + newFileLocation + "\\" + newFileName;
-
-                    // Make any required directories
-                    if (!System.IO.Directory.Exists(TextNewFolderLocation.Text + "\\" + newFileLocation))
+                    if (GetMD5Checksum(source) == GetMD5Checksum(destination))
                     {
-                        System.IO.Directory.CreateDirectory(TextNewFolderLocation.Text + "\\" + newFileLocation);
+                        SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
+                        SetRows(i - 1, "New", "Done", "Yes");
                     }
-
-                    // Copy the files
-                    System.IO.File.Copy(source, destination, true);
-
-                    // Check the destination files exist and both checksums are equal and display output data
-                    if (File.Exists(destination))
+                    else
                     {
-                        if (GetMD5Checksum(source) == GetMD5Checksum(destination))
-                        {
-                            SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
-                            SetRows(i - 1, "New", "Done", "Yes");
-                        }
-                        else
-                        {
-                            SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
-                            SetRows(i - 1, "New", "Done", "Error");
+                        SetRows(i - 1, "New", "New File Checksum", GetMD5Checksum(destination));
+                        SetRows(i - 1, "New", "Done", "Error");
 
-                            dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
-                        }
+                        dataGridView2.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
                     }
                 }
             }

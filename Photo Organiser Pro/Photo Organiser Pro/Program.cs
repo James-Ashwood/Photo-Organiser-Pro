@@ -16,7 +16,7 @@ namespace Photo_Organiser_Pro
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Window1());
+            Application.Run(new MainForm());
         }
     }
 }
