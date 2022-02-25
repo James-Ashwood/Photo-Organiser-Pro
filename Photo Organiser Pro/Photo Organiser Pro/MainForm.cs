@@ -206,25 +206,33 @@ namespace Photo_Organiser_Pro
 
             List<MediaDevice> devices = MediaDevice.GetDevices().ToList();
             var device = devices.Find(c => c.FriendlyName.Contains("Apple iPhone"));
-            device.Connect();
-            var photoDir = device.GetDirectoryInfo(@"Internal Storage/DCIM");
-
-            var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
-
-            foreach (var file in files)
+            if (device != null)
             {
-                MemoryStream memoryStream = new System.IO.MemoryStream();
-                device.DownloadFile(file.FullName, memoryStream);
-                memoryStream.Position = 0;
-                WriteSreamToDisk($@"C:\Users\{userName}\.pop\{folderName}\{file.Name}", memoryStream);
-                Debug.WriteLine($@"Reading from {file.Name} on {device.FriendlyName}");
+                device.Connect();
+                var photoDir = device.GetDirectoryInfo(@"Internal Storage/DCIM");
+
+                var files = photoDir.EnumerateFiles("*.*", SearchOption.AllDirectories);
+
+                foreach (var file in files)
+                {
+                    MemoryStream memoryStream = new System.IO.MemoryStream();
+                    device.DownloadFile(file.FullName, memoryStream);
+                    memoryStream.Position = 0;
+                    WriteSreamToDisk($@"C:\Users\{userName}\.pop\{folderName}\{file.Name}", memoryStream);
+                    Debug.WriteLine($@"Reading from {file.Name} on {device.FriendlyName}");
+                }
+
+                device.Disconnect();
+
+                returnString = $@"C:\Users\{userName}\.pop\{folderName}";
+
+                return returnString;
             }
-
-            device.Disconnect();
-
-            returnString = $@"C:\Users\{userName}\.pop\{folderName}";
-
-            return returnString;
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Error - Problem with accessing images. Check your phone is correctly connected (preferably via USB), and if that does not work, report a bug on our GitHub page.");
+                return "Error";
+            }
         }
 
         public void GoCopy()
@@ -322,31 +330,36 @@ namespace Photo_Organiser_Pro
                     }));
                 }
             }
+            if (InputDataTable.Rows.Count != 0)
+            {
+                int result = correct / InputDataTable.Rows.Count * 100;
+                string resultMessage = "Success Rate: " + result.ToString() + "%";
+                if (Tab4SuccessRate.InvokeRequired)
+                {
+                    Tab4SuccessRate.Invoke(new MethodInvoker(delegate
+                    {
+                        Tab4SuccessRate.Text = resultMessage;
+                    }));
+                }
 
-            int result = correct / InputDataTable.Rows.Count * 100;
-            string resultMessage = "Success Rate: " + result.ToString() + "%";
-            if (Tab4SuccessRate.InvokeRequired)
-            {
-                Tab4SuccessRate.Invoke(new MethodInvoker(delegate {
-                    Tab4SuccessRate.Text = resultMessage;
-                }));
-            }
-
-            if (Tab4InputDataGridView.InvokeRequired)
-            {
-                Tab4InputDataGridView.Invoke(new MethodInvoker(delegate {
-                    Tab4InputDataGridView.DataSource = RunInputDataTable;
-                    Tab4InputDataGridView.Update();
-                    Tab4InputDataGridView.Refresh();
-                }));
-            }
-            if (Tab4OutputDataGridView.InvokeRequired)
-            {
-                Tab4OutputDataGridView.Invoke(new MethodInvoker(delegate {
-                    Tab4OutputDataGridView.DataSource = RunOutputDataTable;
-                    Tab4OutputDataGridView.Update();
-                    Tab4OutputDataGridView.Refresh();
-                }));
+                if (Tab4InputDataGridView.InvokeRequired)
+                {
+                    Tab4InputDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        Tab4InputDataGridView.DataSource = RunInputDataTable;
+                        Tab4InputDataGridView.Update();
+                        Tab4InputDataGridView.Refresh();
+                    }));
+                }
+                if (Tab4OutputDataGridView.InvokeRequired)
+                {
+                    Tab4OutputDataGridView.Invoke(new MethodInvoker(delegate
+                    {
+                        Tab4OutputDataGridView.DataSource = RunOutputDataTable;
+                        Tab4OutputDataGridView.Update();
+                        Tab4OutputDataGridView.Refresh();
+                    }));
+                }
             }
         }
 
@@ -436,8 +449,18 @@ namespace Photo_Organiser_Pro
 
         private void UpdateGrids()
         {
-            InputInputFileLocation2.Text = InputInputFileLocation.Text;
-            InputOutputFileLocation2.Text = InputOutputFileLocation.Text;
+            if (InputInputFileLocation2.InvokeRequired)
+            {
+                InputInputFileLocation2.Invoke(new MethodInvoker(delegate {
+                    InputInputFileLocation2.Text = InputInputFileLocation.Text;
+                }));
+            }
+            if (InputOutputFileLocation2.InvokeRequired)
+            {
+                InputOutputFileLocation2.Invoke(new MethodInvoker(delegate {
+                    InputOutputFileLocation2.Text = InputOutputFileLocation.Text;
+                }));
+            }
             ConventionOptions NamingConvention = new ConventionOptions(InputNamingConvention.Text);
             ConventionOptions FolderConvention = new ConventionOptions(InputFolderConvention.Text);
 
@@ -457,42 +480,47 @@ namespace Photo_Organiser_Pro
                     dataPlace = InputInputFileLocation.Text;
                 }
 
-                string[] files = System.IO.Directory.GetFiles(dataPlace, "*", SearchOption.AllDirectories);
-                foreach (var file in files)
+                if (dataPlace != "Error")
                 {
-                    string fileName = file.Split('\\')[file.Split('\\').Length - 1];
-                    string filePath = file.Replace(fileName, "").Replace(dataPlace, "");
-                    string fileEnding = fileName.Split('.')[fileName.Split('.').Length - 1];
-
-                    if (fileEnding != "AAE")
+                    string[] files = System.IO.Directory.GetFiles(dataPlace, "*", SearchOption.AllDirectories);
+                    foreach (var file in files)
                     {
-                        InputFileRow = InputDataTable.NewRow();
-                        InputFileRow["Input File Name"] = fileName;
-                        InputFileRow["Input File Location"] = filePath;
+                        string fileName = file.Split('\\')[file.Split('\\').Length - 1];
+                        string filePath = file.Replace(fileName, "").Replace(dataPlace, "");
+                        string fileEnding = fileName.Split('.')[fileName.Split('.').Length - 1];
 
-                        InputDataTable.Rows.Add(InputFileRow);
-
-                        OutputFileRow = OutputDataTable.NewRow();
-                        OutputFileRow["Output File Name"] = NamingConvention.GetNewFileName(file) + "." + fileEnding;
-                        OutputFileRow["Output File Location"] = FolderConvention.GetNewFileName(file);
-
-                        OutputDataTable.Rows.Add(OutputFileRow);
-
-                        if (Tab3InputDataGridView.InvokeRequired)
+                        if (fileEnding != "AAE")
                         {
-                            Tab3InputDataGridView.Invoke(new MethodInvoker(delegate {
-                                Tab3InputDataGridView.DataSource = InputDataTable;
-                                Tab3InputDataGridView.Update();
-                                Tab3InputDataGridView.Refresh();
-                            }));
-                        }
-                        if (Tab3OutputDataGridView.InvokeRequired)
-                        {
-                            Tab3OutputDataGridView.Invoke(new MethodInvoker(delegate {
-                                Tab3OutputDataGridView.DataSource = OutputDataTable;
-                                Tab3OutputDataGridView.Update();
-                                Tab3OutputDataGridView.Refresh();
-                            }));
+                            InputFileRow = InputDataTable.NewRow();
+                            InputFileRow["Input File Name"] = fileName;
+                            InputFileRow["Input File Location"] = filePath;
+
+                            InputDataTable.Rows.Add(InputFileRow);
+
+                            OutputFileRow = OutputDataTable.NewRow();
+                            OutputFileRow["Output File Name"] = NamingConvention.GetNewFileName(file) + "." + fileEnding;
+                            OutputFileRow["Output File Location"] = FolderConvention.GetNewFileName(file);
+
+                            OutputDataTable.Rows.Add(OutputFileRow);
+
+                            if (Tab3InputDataGridView.InvokeRequired)
+                            {
+                                Tab3InputDataGridView.Invoke(new MethodInvoker(delegate
+                                {
+                                    Tab3InputDataGridView.DataSource = InputDataTable;
+                                    Tab3InputDataGridView.Update();
+                                    Tab3InputDataGridView.Refresh();
+                                }));
+                            }
+                            if (Tab3OutputDataGridView.InvokeRequired)
+                            {
+                                Tab3OutputDataGridView.Invoke(new MethodInvoker(delegate
+                                {
+                                    Tab3OutputDataGridView.DataSource = OutputDataTable;
+                                    Tab3OutputDataGridView.Update();
+                                    Tab3OutputDataGridView.Refresh();
+                                }));
+                            }
                         }
                     }
                 }
