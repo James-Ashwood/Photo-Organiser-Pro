@@ -76,6 +76,13 @@ namespace Photo_Organiser_Pro
             this.Tab4InputDataGridView = new System.Windows.Forms.DataGridView();
             this.Tab4SuccessRate = new System.Windows.Forms.Label();
             this.Tab4Title = new System.Windows.Forms.Label();
+            this.Tab2Subheading3 = new System.Windows.Forms.Label();
+            this.Tab2Info1 = new System.Windows.Forms.TextBox();
+            this.Tab2Info2 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Tab2Link1 = new System.Windows.Forms.LinkLabel();
             this.NavigationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.MainTabControl.SuspendLayout();
@@ -331,6 +338,13 @@ namespace Photo_Organiser_Pro
             // NamingConventions
             // 
             this.NamingConventions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(236)))), ((int)(((byte)(236)))));
+            this.NamingConventions.Controls.Add(this.Tab2Link1);
+            this.NamingConventions.Controls.Add(this.label4);
+            this.NamingConventions.Controls.Add(this.label3);
+            this.NamingConventions.Controls.Add(this.label2);
+            this.NamingConventions.Controls.Add(this.Tab2Info2);
+            this.NamingConventions.Controls.Add(this.Tab2Info1);
+            this.NamingConventions.Controls.Add(this.Tab2Subheading3);
             this.NamingConventions.Controls.Add(this.Tab2SetDefault2);
             this.NamingConventions.Controls.Add(this.Tab2SetDefault1);
             this.NamingConventions.Controls.Add(this.InputFolderConvention);
@@ -351,7 +365,7 @@ namespace Photo_Organiser_Pro
             // 
             this.Tab2SetDefault2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(196)))), ((int)(((byte)(196)))));
             this.Tab2SetDefault2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(83)))), ((int)(((byte)(98)))));
-            this.Tab2SetDefault2.Location = new System.Drawing.Point(1088, 406);
+            this.Tab2SetDefault2.Location = new System.Drawing.Point(1081, 273);
             this.Tab2SetDefault2.Name = "Tab2SetDefault2";
             this.Tab2SetDefault2.Size = new System.Drawing.Size(218, 27);
             this.Tab2SetDefault2.TabIndex = 30;
@@ -376,7 +390,7 @@ namespace Photo_Organiser_Pro
             this.InputFolderConvention.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.InputFolderConvention.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InputFolderConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(83)))), ((int)(((byte)(98)))));
-            this.InputFolderConvention.Location = new System.Drawing.Point(38, 406);
+            this.InputFolderConvention.Location = new System.Drawing.Point(31, 273);
             this.InputFolderConvention.Name = "InputFolderConvention";
             this.InputFolderConvention.Size = new System.Drawing.Size(1044, 27);
             this.InputFolderConvention.TabIndex = 22;
@@ -388,7 +402,7 @@ namespace Photo_Organiser_Pro
             this.Tab2Subheading2.AutoSize = true;
             this.Tab2Subheading2.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Tab2Subheading2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.Tab2Subheading2.Location = new System.Drawing.Point(29, 348);
+            this.Tab2Subheading2.Location = new System.Drawing.Point(22, 215);
             this.Tab2Subheading2.Name = "Tab2Subheading2";
             this.Tab2Subheading2.Size = new System.Drawing.Size(200, 24);
             this.Tab2Subheading2.TabIndex = 21;
@@ -660,6 +674,75 @@ namespace Photo_Organiser_Pro
             this.Tab4Title.TabIndex = 6;
             this.Tab4Title.Text = "Report";
             // 
+            // Tab2Subheading3
+            // 
+            this.Tab2Subheading3.AutoSize = true;
+            this.Tab2Subheading3.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Tab2Subheading3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
+            this.Tab2Subheading3.Location = new System.Drawing.Point(22, 347);
+            this.Tab2Subheading3.Name = "Tab2Subheading3";
+            this.Tab2Subheading3.Size = new System.Drawing.Size(259, 24);
+            this.Tab2Subheading3.TabIndex = 32;
+            this.Tab2Subheading3.Text = "Using Convention Syntax";
+            // 
+            // Tab2Info1
+            // 
+            this.Tab2Info1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(236)))), ((int)(((byte)(236)))));
+            this.Tab2Info1.Location = new System.Drawing.Point(26, 384);
+            this.Tab2Info1.Multiline = true;
+            this.Tab2Info1.Name = "Tab2Info1";
+            this.Tab2Info1.ReadOnly = true;
+            this.Tab2Info1.Size = new System.Drawing.Size(1273, 237);
+            this.Tab2Info1.TabIndex = 34;
+            this.Tab2Info1.Text = resources.GetString("Tab2Info1.Text");
+            // 
+            // Tab2Info2
+            // 
+            this.Tab2Info2.AutoSize = true;
+            this.Tab2Info2.Location = new System.Drawing.Point(45, 451);
+            this.Tab2Info2.Name = "Tab2Info2";
+            this.Tab2Info2.Size = new System.Drawing.Size(286, 19);
+            this.Tab2Info2.TabIndex = 35;
+            this.Tab2Info2.Text = "Date Taken: YYYY/MM/DD or DD-MM-YYYY";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(45, 482);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(282, 19);
+            this.label2.TabIndex = 36;
+            this.label2.Text = "Time Taken: THH/TMM/TSS or THH:TMM:TSS";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(45, 513);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(151, 19);
+            this.label3.TabIndex = 37;
+            this.label3.Text = "Camera Model - CM";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(45, 544);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(217, 19);
+            this.label4.TabIndex = 38;
+            this.label4.Text = "Original Name/Path: ON or OP";
+            // 
+            // Tab2Link1
+            // 
+            this.Tab2Link1.AutoSize = true;
+            this.Tab2Link1.Location = new System.Drawing.Point(45, 585);
+            this.Tab2Link1.Name = "Tab2Link1";
+            this.Tab2Link1.Size = new System.Drawing.Size(54, 19);
+            this.Tab2Link1.TabIndex = 39;
+            this.Tab2Link1.TabStop = true;
+            this.Tab2Link1.Text = "Full List";
+            this.Tab2Link1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Tab2Link1_LinkClicked);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -741,5 +824,12 @@ namespace Photo_Organiser_Pro
         private System.Windows.Forms.Button Tab2SetDefault1;
         private System.Windows.Forms.Label Tab4CompletionLabel;
         private System.Windows.Forms.ProgressBar Tab4ProgressBar;
+        private System.Windows.Forms.LinkLabel Tab2Link1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label Tab2Info2;
+        private System.Windows.Forms.TextBox Tab2Info1;
+        private System.Windows.Forms.Label Tab2Subheading3;
     }
 }

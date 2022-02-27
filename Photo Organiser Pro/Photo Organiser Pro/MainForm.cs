@@ -577,5 +577,23 @@ namespace Photo_Organiser_Pro
         {
             CheckRunReport();
         }
+
+        private void Tab2Link1_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                VisitLink();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to open link that was clicked.");
+            }
+        }
+
+        private void VisitLink()
+        {
+            Tab2Link1.LinkVisited = true;
+            System.Diagnostics.Process.Start("https://github.com/James-Ashwood/Photo-Organiser-Pro/blob/main/Project%20Files/ConventionOptions.md");
+        }
     }
 }

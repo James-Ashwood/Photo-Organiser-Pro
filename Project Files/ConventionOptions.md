@@ -31,3 +31,9 @@ Convention Syntax Code
 - CMD = Camera Model Dash (Text Version, " " replaced by "-")
 - ON = Original Name (Text Version)
 - OP = Original Path (Text Version)
+
+A few examples are:
+YYYY/MM/DD                  Organise by year then month then day
+CM-ON                       Camera model, then original name
+OP                          Original Path
+THH-TMM-custom-text         Hour and minuite and then the text "custom-text"
