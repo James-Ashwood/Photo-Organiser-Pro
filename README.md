@@ -2,7 +2,7 @@
   <br>
   Photo Organiser Pro
   <br>
-  <a href="https://github.com/James-Ashwood/Photo-Organiser-Pro"><img src="https://github.com/James-Ashwood/Photo-Organiser-Pro/blob/main/Project%20Files/afa1b529252249918a2e9e851b230d59.png" alt="Photo Organiser Pro" width="200"></a>
+  <a href="https://github.com/James-Ashwood/Photo-Organiser-Pro"><img src="https://raw.githubusercontent.com/James-Ashwood/Photo-Organiser-Pro/main/Project%20Files/Logo%20(PNG%20File).png" alt="Photo Organiser Pro" width="200"></a>
   <br>
   <img src="https://img.shields.io/badge/Monitered-Yes-success">
   <img src="https://img.shields.io/badge/Platform-Windows-lightgray">
