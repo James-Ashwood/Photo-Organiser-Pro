@@ -482,46 +482,54 @@ namespace Photo_Organiser_Pro
 
                 if (dataPlace != "Error")
                 {
-                    string[] files = System.IO.Directory.GetFiles(dataPlace, "*", SearchOption.AllDirectories);
-                    foreach (var file in files)
+                    try
                     {
-                        string fileName = file.Split('\\')[file.Split('\\').Length - 1];
-                        string filePath = file.Replace(fileName, "").Replace(dataPlace, "");
-                        string fileEnding = fileName.Split('.')[fileName.Split('.').Length - 1];
-
-                        if (fileEnding != "AAE")
+                        string[] files = System.IO.Directory.GetFiles(dataPlace, "*", SearchOption.AllDirectories);
+                        foreach (var file in files)
                         {
-                            InputFileRow = InputDataTable.NewRow();
-                            InputFileRow["Input File Name"] = fileName;
-                            InputFileRow["Input File Location"] = filePath;
-
-                            InputDataTable.Rows.Add(InputFileRow);
-
-                            OutputFileRow = OutputDataTable.NewRow();
-                            OutputFileRow["Output File Name"] = NamingConvention.GetNewFileName(file) + "." + fileEnding;
-                            OutputFileRow["Output File Location"] = FolderConvention.GetNewFileName(file);
-
-                            OutputDataTable.Rows.Add(OutputFileRow);
-
-                            if (Tab3InputDataGridView.InvokeRequired)
+                            InputInputFileLocation.ForeColor = Color.Green;
+                            string fileName = file.Split('\\')[file.Split('\\').Length - 1];
+                            string filePath = file.Replace(fileName, "").Replace(dataPlace, "");
+                            string fileEnding = fileName.Split('.')[fileName.Split('.').Length - 1];
+                            List<string> validFileEndings = new List<string>() { "PNG", "JPEG", "JPG", "RAW", "FRAW", "CR2", "TIFF", "ARW", "WEBP" };
+                            if (validFileEndings.Contains(fileEnding.ToUpper()))
                             {
-                                Tab3InputDataGridView.Invoke(new MethodInvoker(delegate
+                                InputFileRow = InputDataTable.NewRow();
+                                InputFileRow["Input File Name"] = fileName;
+                                InputFileRow["Input File Location"] = filePath;
+
+                                InputDataTable.Rows.Add(InputFileRow);
+
+                                OutputFileRow = OutputDataTable.NewRow();
+                                OutputFileRow["Output File Name"] = NamingConvention.GetNewFileName(file) + "." + fileEnding;
+                                OutputFileRow["Output File Location"] = FolderConvention.GetNewFileName(file);
+
+                                OutputDataTable.Rows.Add(OutputFileRow);
+
+                                if (Tab3InputDataGridView.InvokeRequired)
                                 {
-                                    Tab3InputDataGridView.DataSource = InputDataTable;
-                                    Tab3InputDataGridView.Update();
-                                    Tab3InputDataGridView.Refresh();
-                                }));
-                            }
-                            if (Tab3OutputDataGridView.InvokeRequired)
-                            {
-                                Tab3OutputDataGridView.Invoke(new MethodInvoker(delegate
+                                    Tab3InputDataGridView.Invoke(new MethodInvoker(delegate
+                                    {
+                                        Tab3InputDataGridView.DataSource = InputDataTable;
+                                        Tab3InputDataGridView.Update();
+                                        Tab3InputDataGridView.Refresh();
+                                    }));
+                                }
+                                if (Tab3OutputDataGridView.InvokeRequired)
                                 {
-                                    Tab3OutputDataGridView.DataSource = OutputDataTable;
-                                    Tab3OutputDataGridView.Update();
-                                    Tab3OutputDataGridView.Refresh();
-                                }));
+                                    Tab3OutputDataGridView.Invoke(new MethodInvoker(delegate
+                                    {
+                                        Tab3OutputDataGridView.DataSource = OutputDataTable;
+                                        Tab3OutputDataGridView.Update();
+                                        Tab3OutputDataGridView.Refresh();
+                                    }));
+                                }
                             }
                         }
+                    }
+                    catch (System.IO.DirectoryNotFoundException)
+                    {
+                        InputInputFileLocation.ForeColor = Color.Red;
                     }
                 }
             }

@@ -52,20 +52,8 @@ namespace Photo_Organiser_Pro
             this.NamingConventions = new System.Windows.Forms.TabPage();
             this.Tab2SetDefault2 = new System.Windows.Forms.Button();
             this.Tab2SetDefault1 = new System.Windows.Forms.Button();
-            this.CheckBoxOriginalPath = new System.Windows.Forms.CheckBox();
-            this.CheckBoxDateCreatedFolderConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxDateModifiedFolderConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxCameraModelFolderConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxTimeTakenFolderConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxDateTakenFolderConvention = new System.Windows.Forms.CheckBox();
             this.InputFolderConvention = new System.Windows.Forms.TextBox();
             this.Tab2Subheading2 = new System.Windows.Forms.Label();
-            this.CheckBoxOriginalNameNamingConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxDateCreatedNamingConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxDateModifiedNamingConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxCameraModelNamingConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxTimeTakenNamingConvention = new System.Windows.Forms.CheckBox();
-            this.CheckBoxDateTakenNamingConvention = new System.Windows.Forms.CheckBox();
             this.Tab2BackButton = new System.Windows.Forms.Button();
             this.Tab2NextButton = new System.Windows.Forms.Button();
             this.InputNamingConvention = new System.Windows.Forms.TextBox();
@@ -345,20 +333,8 @@ namespace Photo_Organiser_Pro
             this.NamingConventions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(236)))), ((int)(((byte)(236)))));
             this.NamingConventions.Controls.Add(this.Tab2SetDefault2);
             this.NamingConventions.Controls.Add(this.Tab2SetDefault1);
-            this.NamingConventions.Controls.Add(this.CheckBoxOriginalPath);
-            this.NamingConventions.Controls.Add(this.CheckBoxDateCreatedFolderConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxDateModifiedFolderConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxCameraModelFolderConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxTimeTakenFolderConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxDateTakenFolderConvention);
             this.NamingConventions.Controls.Add(this.InputFolderConvention);
             this.NamingConventions.Controls.Add(this.Tab2Subheading2);
-            this.NamingConventions.Controls.Add(this.CheckBoxOriginalNameNamingConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxDateCreatedNamingConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxDateModifiedNamingConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxCameraModelNamingConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxTimeTakenNamingConvention);
-            this.NamingConventions.Controls.Add(this.CheckBoxDateTakenNamingConvention);
             this.NamingConventions.Controls.Add(this.Tab2BackButton);
             this.NamingConventions.Controls.Add(this.Tab2NextButton);
             this.NamingConventions.Controls.Add(this.InputNamingConvention);
@@ -395,78 +371,6 @@ namespace Photo_Organiser_Pro
             this.Tab2SetDefault1.UseVisualStyleBackColor = false;
             this.Tab2SetDefault1.Click += new System.EventHandler(this.UpdateSettings);
             // 
-            // CheckBoxOriginalPath
-            // 
-            this.CheckBoxOriginalPath.AutoSize = true;
-            this.CheckBoxOriginalPath.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxOriginalPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxOriginalPath.Location = new System.Drawing.Point(723, 543);
-            this.CheckBoxOriginalPath.Name = "CheckBoxOriginalPath";
-            this.CheckBoxOriginalPath.Size = new System.Drawing.Size(121, 24);
-            this.CheckBoxOriginalPath.TabIndex = 28;
-            this.CheckBoxOriginalPath.Text = "Original Path";
-            this.CheckBoxOriginalPath.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxDateCreatedFolderConvention
-            // 
-            this.CheckBoxDateCreatedFolderConvention.AutoSize = true;
-            this.CheckBoxDateCreatedFolderConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxDateCreatedFolderConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxDateCreatedFolderConvention.Location = new System.Drawing.Point(723, 506);
-            this.CheckBoxDateCreatedFolderConvention.Name = "CheckBoxDateCreatedFolderConvention";
-            this.CheckBoxDateCreatedFolderConvention.Size = new System.Drawing.Size(130, 24);
-            this.CheckBoxDateCreatedFolderConvention.TabIndex = 27;
-            this.CheckBoxDateCreatedFolderConvention.Text = "Date Created";
-            this.CheckBoxDateCreatedFolderConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxDateModifiedFolderConvention
-            // 
-            this.CheckBoxDateModifiedFolderConvention.AutoSize = true;
-            this.CheckBoxDateModifiedFolderConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxDateModifiedFolderConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxDateModifiedFolderConvention.Location = new System.Drawing.Point(723, 468);
-            this.CheckBoxDateModifiedFolderConvention.Name = "CheckBoxDateModifiedFolderConvention";
-            this.CheckBoxDateModifiedFolderConvention.Size = new System.Drawing.Size(134, 24);
-            this.CheckBoxDateModifiedFolderConvention.TabIndex = 26;
-            this.CheckBoxDateModifiedFolderConvention.Text = "Date Modified";
-            this.CheckBoxDateModifiedFolderConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxCameraModelFolderConvention
-            // 
-            this.CheckBoxCameraModelFolderConvention.AutoSize = true;
-            this.CheckBoxCameraModelFolderConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxCameraModelFolderConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxCameraModelFolderConvention.Location = new System.Drawing.Point(459, 543);
-            this.CheckBoxCameraModelFolderConvention.Name = "CheckBoxCameraModelFolderConvention";
-            this.CheckBoxCameraModelFolderConvention.Size = new System.Drawing.Size(140, 24);
-            this.CheckBoxCameraModelFolderConvention.TabIndex = 25;
-            this.CheckBoxCameraModelFolderConvention.Text = "Camera Model";
-            this.CheckBoxCameraModelFolderConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxTimeTakenFolderConvention
-            // 
-            this.CheckBoxTimeTakenFolderConvention.AutoSize = true;
-            this.CheckBoxTimeTakenFolderConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxTimeTakenFolderConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxTimeTakenFolderConvention.Location = new System.Drawing.Point(459, 506);
-            this.CheckBoxTimeTakenFolderConvention.Name = "CheckBoxTimeTakenFolderConvention";
-            this.CheckBoxTimeTakenFolderConvention.Size = new System.Drawing.Size(105, 24);
-            this.CheckBoxTimeTakenFolderConvention.TabIndex = 24;
-            this.CheckBoxTimeTakenFolderConvention.Text = "Time Taken";
-            this.CheckBoxTimeTakenFolderConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxDateTakenFolderConvention
-            // 
-            this.CheckBoxDateTakenFolderConvention.AutoSize = true;
-            this.CheckBoxDateTakenFolderConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxDateTakenFolderConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxDateTakenFolderConvention.Location = new System.Drawing.Point(459, 468);
-            this.CheckBoxDateTakenFolderConvention.Name = "CheckBoxDateTakenFolderConvention";
-            this.CheckBoxDateTakenFolderConvention.Size = new System.Drawing.Size(110, 24);
-            this.CheckBoxDateTakenFolderConvention.TabIndex = 23;
-            this.CheckBoxDateTakenFolderConvention.Text = "Date Taken";
-            this.CheckBoxDateTakenFolderConvention.UseVisualStyleBackColor = true;
-            // 
             // InputFolderConvention
             // 
             this.InputFolderConvention.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
@@ -489,78 +393,6 @@ namespace Photo_Organiser_Pro
             this.Tab2Subheading2.Size = new System.Drawing.Size(200, 24);
             this.Tab2Subheading2.TabIndex = 21;
             this.Tab2Subheading2.Text = "Folder Convention";
-            // 
-            // CheckBoxOriginalNameNamingConvention
-            // 
-            this.CheckBoxOriginalNameNamingConvention.AutoSize = true;
-            this.CheckBoxOriginalNameNamingConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxOriginalNameNamingConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxOriginalNameNamingConvention.Location = new System.Drawing.Point(723, 271);
-            this.CheckBoxOriginalNameNamingConvention.Name = "CheckBoxOriginalNameNamingConvention";
-            this.CheckBoxOriginalNameNamingConvention.Size = new System.Drawing.Size(132, 24);
-            this.CheckBoxOriginalNameNamingConvention.TabIndex = 20;
-            this.CheckBoxOriginalNameNamingConvention.Text = "Original Name";
-            this.CheckBoxOriginalNameNamingConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxDateCreatedNamingConvention
-            // 
-            this.CheckBoxDateCreatedNamingConvention.AutoSize = true;
-            this.CheckBoxDateCreatedNamingConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxDateCreatedNamingConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxDateCreatedNamingConvention.Location = new System.Drawing.Point(723, 234);
-            this.CheckBoxDateCreatedNamingConvention.Name = "CheckBoxDateCreatedNamingConvention";
-            this.CheckBoxDateCreatedNamingConvention.Size = new System.Drawing.Size(130, 24);
-            this.CheckBoxDateCreatedNamingConvention.TabIndex = 19;
-            this.CheckBoxDateCreatedNamingConvention.Text = "Date Created";
-            this.CheckBoxDateCreatedNamingConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxDateModifiedNamingConvention
-            // 
-            this.CheckBoxDateModifiedNamingConvention.AutoSize = true;
-            this.CheckBoxDateModifiedNamingConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxDateModifiedNamingConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxDateModifiedNamingConvention.Location = new System.Drawing.Point(723, 196);
-            this.CheckBoxDateModifiedNamingConvention.Name = "CheckBoxDateModifiedNamingConvention";
-            this.CheckBoxDateModifiedNamingConvention.Size = new System.Drawing.Size(134, 24);
-            this.CheckBoxDateModifiedNamingConvention.TabIndex = 18;
-            this.CheckBoxDateModifiedNamingConvention.Text = "Date Modified";
-            this.CheckBoxDateModifiedNamingConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxCameraModelNamingConvention
-            // 
-            this.CheckBoxCameraModelNamingConvention.AutoSize = true;
-            this.CheckBoxCameraModelNamingConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxCameraModelNamingConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxCameraModelNamingConvention.Location = new System.Drawing.Point(459, 271);
-            this.CheckBoxCameraModelNamingConvention.Name = "CheckBoxCameraModelNamingConvention";
-            this.CheckBoxCameraModelNamingConvention.Size = new System.Drawing.Size(140, 24);
-            this.CheckBoxCameraModelNamingConvention.TabIndex = 17;
-            this.CheckBoxCameraModelNamingConvention.Text = "Camera Model";
-            this.CheckBoxCameraModelNamingConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxTimeTakenNamingConvention
-            // 
-            this.CheckBoxTimeTakenNamingConvention.AutoSize = true;
-            this.CheckBoxTimeTakenNamingConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxTimeTakenNamingConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxTimeTakenNamingConvention.Location = new System.Drawing.Point(459, 234);
-            this.CheckBoxTimeTakenNamingConvention.Name = "CheckBoxTimeTakenNamingConvention";
-            this.CheckBoxTimeTakenNamingConvention.Size = new System.Drawing.Size(105, 24);
-            this.CheckBoxTimeTakenNamingConvention.TabIndex = 16;
-            this.CheckBoxTimeTakenNamingConvention.Text = "Time Taken";
-            this.CheckBoxTimeTakenNamingConvention.UseVisualStyleBackColor = true;
-            // 
-            // CheckBoxDateTakenNamingConvention
-            // 
-            this.CheckBoxDateTakenNamingConvention.AutoSize = true;
-            this.CheckBoxDateTakenNamingConvention.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.CheckBoxDateTakenNamingConvention.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(25)))), ((int)(((byte)(54)))));
-            this.CheckBoxDateTakenNamingConvention.Location = new System.Drawing.Point(459, 196);
-            this.CheckBoxDateTakenNamingConvention.Name = "CheckBoxDateTakenNamingConvention";
-            this.CheckBoxDateTakenNamingConvention.Size = new System.Drawing.Size(110, 24);
-            this.CheckBoxDateTakenNamingConvention.TabIndex = 15;
-            this.CheckBoxDateTakenNamingConvention.Text = "Date Taken";
-            this.CheckBoxDateTakenNamingConvention.UseVisualStyleBackColor = true;
             // 
             // Tab2BackButton
             // 
@@ -890,18 +722,6 @@ namespace Photo_Organiser_Pro
         private System.Windows.Forms.Label Tab2Title;
         private System.Windows.Forms.Button Tab2BackButton;
         private System.Windows.Forms.Button Tab2NextButton;
-        private System.Windows.Forms.CheckBox CheckBoxCameraModelNamingConvention;
-        private System.Windows.Forms.CheckBox CheckBoxTimeTakenNamingConvention;
-        private System.Windows.Forms.CheckBox CheckBoxDateTakenNamingConvention;
-        private System.Windows.Forms.CheckBox CheckBoxOriginalNameNamingConvention;
-        private System.Windows.Forms.CheckBox CheckBoxDateCreatedNamingConvention;
-        private System.Windows.Forms.CheckBox CheckBoxDateModifiedNamingConvention;
-        private System.Windows.Forms.CheckBox CheckBoxOriginalPath;
-        private System.Windows.Forms.CheckBox CheckBoxDateCreatedFolderConvention;
-        private System.Windows.Forms.CheckBox CheckBoxDateModifiedFolderConvention;
-        private System.Windows.Forms.CheckBox CheckBoxCameraModelFolderConvention;
-        private System.Windows.Forms.CheckBox CheckBoxTimeTakenFolderConvention;
-        private System.Windows.Forms.CheckBox CheckBoxDateTakenFolderConvention;
         private System.Windows.Forms.TextBox InputFolderConvention;
         private System.Windows.Forms.Label Tab2Subheading2;
         private System.Windows.Forms.TextBox InputOutputFileLocation2;

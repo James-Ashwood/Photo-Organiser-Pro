@@ -37,7 +37,6 @@ namespace Photo_Organiser_Pro
                 }
             }
         }
-
         public string GetNewFileName(string filePath)
         {
             string returnString = StringConvention;
@@ -51,7 +50,8 @@ namespace Photo_Organiser_Pro
         public string GetData(string filePath, string shorthand)
         {
             string replaceValue = "";
-            IReadOnlyList<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(filePath);
+            Debug.WriteLine(filePath);
+            IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(filePath);
             string pureData;
             if (shorthand == "YYYY")
             {
@@ -74,7 +74,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 replaceValue = tag.Description.Split(' ')[tag.Description.Split(' ').Length - 1];
@@ -105,7 +104,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 replaceValue = tag.Description.Split(' ')[tag.Description.Split(' ').Length - 1];
@@ -138,7 +136,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 replaceValue = tag.Description.Split(' ')[1];
@@ -169,7 +166,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 replaceValue = (months.IndexOf(tag.Description.Split(' ')[1])+1).ToString();
@@ -205,7 +201,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 replaceValue = (months.IndexOf(tag.Description.Split(' ')[1]) + 1).ToString();
@@ -239,7 +234,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 replaceValue = tag.Description.Split(' ')[2];
@@ -270,7 +264,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 replaceValue = tag.Description.Split(' ')[2];
@@ -291,10 +284,17 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "File Modified Date")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string year = date.Split(':')[0];
-                            replaceValue = year;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string year = date.Split(':')[0];
+                                replaceValue = year;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -307,11 +307,18 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "File Modified Date")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string year = date.Split(':')[0];
-                            string yearFirstTwo = year.Substring(year.Length - 2);
-                            replaceValue = yearFirstTwo;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string year = date.Split(':')[0];
+                                string yearFirstTwo = year.Substring(year.Length - 2);
+                                replaceValue = yearFirstTwo;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -324,10 +331,17 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "File Modified Date")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string month = date.Split(':')[1];
-                            replaceValue = month;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string month = date.Split(':')[1];
+                                replaceValue = month;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -340,16 +354,23 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "File Modified Date")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string month = date.Split(':')[1];
-                            List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                            string returnData = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
-                            if (returnData.Length == 1)
+                            try
                             {
-                                returnData = "0" + returnData;
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string month = date.Split(':')[1];
+                                List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                                string returnData = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
+                                if (returnData.Length == 1)
+                                {
+                                    returnData = "0" + returnData;
+                                }
+                                replaceValue = returnData;
                             }
-                            replaceValue = returnData;
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -362,11 +383,18 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "File Modified Date")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string month = date.Split(':')[1];
-                            List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                            replaceValue = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string month = date.Split(':')[1];
+                                List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                                replaceValue = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -379,14 +407,21 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "File Modified Date")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string day = date.Split(':')[2];
-                            if (day.Length == 1)
+                            try
                             {
-                                day = "0" + day;
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string day = date.Split(':')[1];
+                                if (day.Length == 1)
+                                {
+                                    day = "0" + day;
+                                }
+                                replaceValue = day;
                             }
-                            replaceValue = day;
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -399,10 +434,17 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "File Modified Date")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string day = date.Split(':')[2].TrimStart('0');
-                            replaceValue = day;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string day = date.Split(':')[2].TrimStart('0');
+                                replaceValue = day;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -415,10 +457,17 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "Date/Time Digitized")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string year = date.Split(':')[0];
-                            replaceValue = year;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string year = date.Split(':')[0];
+                                replaceValue = year;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -431,11 +480,18 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "Date/Time Digitized")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string year = date.Split(':')[0];
-                            string yearFirstTwo = year.Substring(year.Length - 2);
-                            replaceValue = yearFirstTwo;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string year = date.Split(':')[0];
+                                string yearFirstTwo = year.Substring(year.Length - 2);
+                                replaceValue = yearFirstTwo;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -448,10 +504,17 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "Date/Time Digitized")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string month = date.Split(':')[1];
-                            replaceValue = month;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string month = date.Split(':')[1];
+                                replaceValue = month;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -464,16 +527,23 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "Date/Time Digitized")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string month = date.Split(':')[1];
-                            List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                            string returnData = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
-                            if (returnData.Length == 1)
+                            try
                             {
-                                returnData = "0" + returnData;
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string month = date.Split(':')[1];
+                                List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                                string returnData = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
+                                if (returnData.Length == 1)
+                                {
+                                    returnData = "0" + returnData;
+                                }
+                                replaceValue = returnData;
                             }
-                            replaceValue = returnData;
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -486,11 +556,18 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "Date/Time Digitized")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string month = date.Split(':')[1];
-                            List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                            replaceValue = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string month = date.Split(':')[1];
+                                List<string> months = new List<string>() { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                                replaceValue = (months.FindIndex(a => a.Contains(month)) + 1).ToString();
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -503,14 +580,21 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "Date/Time Digitized")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string day = date.Split(':')[2];
-                            if (day.Length == 1)
+                            try
                             {
-                                day = "0" + day;
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string day = date.Split(':')[2];
+                                if (day.Length == 1)
+                                {
+                                    day = "0" + day;
+                                }
+                                replaceValue = day;
                             }
-                            replaceValue = day;
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
@@ -523,10 +607,17 @@ namespace Photo_Organiser_Pro
                     {
                         if (tag.Name == "Date/Time Digitized")
                         {
-                            pureData = tag.Description;
-                            string date = pureData.Split(' ')[0];
-                            string day = date.Split(':')[2].TrimStart('0');
-                            replaceValue = day;
+                            try
+                            {
+                                pureData = tag.Description;
+                                string date = pureData.Split(' ')[0];
+                                string day = date.Split(':')[2].TrimStart('0');
+                                replaceValue = day;
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                replaceValue = "NoAvailableData";
+                            }
                         }
                     }
                 }
