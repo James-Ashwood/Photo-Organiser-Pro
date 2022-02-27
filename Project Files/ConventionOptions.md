@@ -1,4 +1,4 @@
-       Set Values        
+Convention Syntax Code  
 =========================
 
 - YYYY = Date Taken Year (4 Digits)
