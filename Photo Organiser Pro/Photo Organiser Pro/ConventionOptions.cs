@@ -639,7 +639,7 @@ namespace Photo_Organiser_Pro
                             }
                             else
                             {
-                                hour = hour + "AM";
+                                hour += "AM";
                             }
                             replaceValue = hour;
                         }
@@ -651,7 +651,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 pureData = tag.Description.Split(' ')[3]; 
@@ -662,7 +661,7 @@ namespace Photo_Organiser_Pro
                                 }
                                 else
                                 {
-                                    hour = hour + "AM";
+                                    hour += "AM";
                                 }
                                 replaceValue = hour;
                             }
@@ -691,7 +690,7 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
+                            
                             if (tag.Name == "File Modified Date")
                             {
                                 pureData = tag.Description.Split(' ')[3];
@@ -723,7 +722,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 pureData = tag.Description.Split(' ')[3];
@@ -755,7 +753,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 pureData = tag.Description.Split(' ')[3];
@@ -794,7 +791,6 @@ namespace Photo_Organiser_Pro
                     {
                         foreach (var tag in directory.Tags)
                         {
-                            Console.WriteLine(tag);
                             if (tag.Name == "File Modified Date")
                             {
                                 pureData = tag.Description;

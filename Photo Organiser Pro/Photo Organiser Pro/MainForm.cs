@@ -201,7 +201,7 @@ namespace Photo_Organiser_Pro
                     System.IO.Directory.CreateDirectory($@"C:\Users\{userName}\.pop\{folderName}\");
                     done = true;
                 }
-                counter = counter + 1;
+                counter++;
             }
 
             List<MediaDevice> devices = MediaDevice.GetDevices().ToList();
@@ -584,7 +584,7 @@ namespace Photo_Organiser_Pro
             {
                 VisitLink();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("Unable to open link that was clicked.");
             }
