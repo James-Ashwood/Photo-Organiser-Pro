@@ -33,7 +33,7 @@ Convention Syntax Code
 - OP = Original Path (Text Version)
 
 A few examples are:
-YYYY/MM/DD                  Organise by year then month then day
-CM-ON                       Camera model, then original name
-OP                          Original Path
-THH-TMM-custom-text         Hour and minuite and then the text "custom-text"
+- YYYY/MM/DD                  Organise by year then month then day
+- CM-ON                       Camera model, then original name
+- OP                          Original Path
+- THH-TMM-custom-text         Hour and minuite and then the text "custom-text"
