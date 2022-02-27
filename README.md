@@ -23,15 +23,22 @@
 
 ## Key Features
 
-* Import off any device
+* Import off any device (including of a phone)
 * Organise your photos how you want in a few clicks
 * Copy exactly from and to where they should be - no copying files everywhere
+* Checks to make sure every file is in the correct place
 * Automatic photo organisation
 * Simple to use - no need to be tech-minded
 
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/83030417/155889865-bf35925a-21c5-4ae8-9832-9f42e4fac385.png)
+![image](https://user-images.githubusercontent.com/83030417/155889970-cd3fdc1c-3a73-4a7a-8ae2-dbad1f526a0c.png)
+
+
 ## How To Use
 
-Still in development - will update when 
+Start by <a href="#download">downloading it</a>. Next, run the application. On the first tab, choose your input and output file location (i.e. where your images are and where they should go). Next, use our convention syntax to organise how your files will be stored. Finally, check everything is correct in the summary tab, and then hop into the report tab and let it run. The files will be copied, and you will be able to say any errors here.
 
 ## Download
 
