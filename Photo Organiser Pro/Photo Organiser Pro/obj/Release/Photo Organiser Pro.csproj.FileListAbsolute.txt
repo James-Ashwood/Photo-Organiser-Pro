@@ -15,3 +15,9 @@ C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Or
 C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.csproj.CoreCompileInputs.cache
 C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.exe
 C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.pdb
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\MediaDevices.dll
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\MediaDevices.pdb
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\bin\Release\MediaDevices.xml
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo_Organiser_Pro.MainForm.resources
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo_Organiser_Pro.PopupForm.resources
+C:\Users\James\Documents\GitHub\Photo-Organiser-Pro\Photo Organiser Pro\Photo Organiser Pro\obj\Release\Photo Organiser Pro.csproj.CopyComplete

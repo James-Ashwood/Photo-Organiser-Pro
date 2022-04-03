@@ -828,13 +828,13 @@ namespace Photo_Organiser_Pro
                         }
                     }
                 }
-                replaceValue = $@"{make} {model}";
+                replaceValue = $@"{make}_{model}";
             }
             if (shorthand == "ON")
             {
-                replaceValue = filePath.Split('\\')[filePath.Split('\\').Length - 1];
+                replaceValue = filePath.Split('\\')[filePath.Split('\\').Length - 1].Split('.')[0];
             }
-            if (shorthand == "ON")
+            if (shorthand == "OP")
             {
                 string fileName = filePath.Split('\\')[filePath.Split('\\').Length - 1];
                 replaceValue = filePath.Replace(fileName, "");

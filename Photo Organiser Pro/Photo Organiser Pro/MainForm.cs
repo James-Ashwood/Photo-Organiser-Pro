@@ -547,21 +547,27 @@ namespace Photo_Organiser_Pro
         {
             if (MainTabControl.SelectedIndex == 3)
             {
-                if (!BackgroundWorkerCopying.IsBusy)
+                PopupForm popup = new PopupForm();
+                DialogResult dialogresult = popup.ShowDialog();
+                if (dialogresult == DialogResult.OK)
                 {
-                    Tab4InputDataGridView.DataSource = RunInputDataTable;
-                    Tab4OutputDataGridView.DataSource = RunOutputDataTable;
+                    if (!BackgroundWorkerCopying.IsBusy)
+                    {
+                        Tab4InputDataGridView.DataSource = RunInputDataTable;
+                        Tab4OutputDataGridView.DataSource = RunOutputDataTable;
 
-                    RunInputDataTable.Clear();
-                    RunOutputDataTable.Clear();
+                        RunInputDataTable.Clear();
+                        RunOutputDataTable.Clear();
 
-                    Tab4InputDataGridView.Update();
-                    Tab4InputDataGridView.Refresh();
-                    Tab4OutputDataGridView.Update();
-                    Tab4OutputDataGridView.Refresh();
+                        Tab4InputDataGridView.Update();
+                        Tab4InputDataGridView.Refresh();
+                        Tab4OutputDataGridView.Update();
+                        Tab4OutputDataGridView.Refresh();
 
-                    BackgroundWorkerCopying.RunWorkerAsync(2000);
+                        BackgroundWorkerCopying.RunWorkerAsync(2000);
+                    }
                 }
+                popup.Dispose();
             }
         }
 
